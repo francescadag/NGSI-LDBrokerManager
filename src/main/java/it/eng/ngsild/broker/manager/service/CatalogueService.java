@@ -38,13 +38,9 @@ import it.eng.ngsild.broker.manager.model.Configurations;
 @Service
 public class CatalogueService  {
 
-	
 	public CatalogueService() {
-
 	}
-	
-//	@Value("${orion.url}")
-//	private String urlCB;
+
 	
 	@Value("${idra.basepath}")
 	private String idraBasePath;
@@ -71,16 +67,14 @@ public class CatalogueService  {
 	      
 	      // OTTENGO IL CATALOGO
 	      RestTemplate restTemplate = new RestTemplate();
-//	      ResponseEntity<String> result = restTemplate.getForEntity(idraBasePath + "/client/catalogues/" + nodeId, String.class); 
-//	      System.out.println("\n RISULTATO GET CATALOGUE: " + result.getStatusCodeValue());
-//	      System.out.println("\n CATALOGUE: " + result.getBody());
 	      
 	      OdmsCatalogue node = restTemplate
-	    	      .getForObject(idraBasePath + "/client/catalogues/" + nodeId, OdmsCatalogue.class);
+	    	      .getForObject(idraBasePath + "/Idra/api/v1/" + "/client/catalogues/" + nodeId, OdmsCatalogue.class);
 	      System.out.println("\n NOME CATALOGUE: " + node.getName());
 
 	      // OTTENGO I DATASETS
-	      ResponseEntity<String> resultDatasets = restTemplate.getForEntity(idraBasePath + "/client/catalogues/" + nodeId + "/datasets", String.class);
+	      ResponseEntity<String> resultDatasets = restTemplate.getForEntity(idraBasePath + "/Idra/api/v1/" 
+	      + "/client/catalogues/" + nodeId + "/datasets", String.class);
 	      ObjectMapper objectMapper = new ObjectMapper();
 	      JsonNode jsonNode = objectMapper.readTree(resultDatasets.getBody());
 
@@ -234,7 +228,7 @@ public class CatalogueService  {
 	          String identificat = d.getId();
 	          
 	          // OTTENGO LA DISTRIBUTION DA IDRA
-	          String apiD = idraBasePath + "/client/catalogues/" + nodeId + "/datasets/" 
+	          String apiD = idraBasePath + "/Idra/api/v1/" + "/client/catalogues/" + nodeId + "/datasets/" 
 	        		  + dataset.getId() + "/distributions/" + d.getId();
 	          Map<String, String> headers = new HashMap<String, String>();
 	          headers.put("Content-Type", "application/json");
@@ -731,16 +725,18 @@ public class CatalogueService  {
 	      
 	      // OTTENGO IL CATALOGO
 	      RestTemplate restTemplate = new RestTemplate();
-	      ResponseEntity<String> result = restTemplate.getForEntity(idraBasePath + "/client/catalogues/" + nodeId, String.class); 
+	      ResponseEntity<String> result = restTemplate.getForEntity(idraBasePath + "/Idra/api/v1/" 
+	      + "/client/catalogues/" + nodeId, String.class); 
 	      System.out.println("\n RISULTATO GET CATALOGUE: " + result.getStatusCodeValue());
 	      System.out.println("\n CATALOGUE: " + result.getBody());
 	      
 	      OdmsCatalogue node = restTemplate
-	    	      .getForObject(idraBasePath + "/client/catalogues/" + nodeId, OdmsCatalogue.class);
+	    	      .getForObject(idraBasePath + "/Idra/api/v1/" + "/client/catalogues/" + nodeId, OdmsCatalogue.class);
 	      System.out.println("\n CATALOGUE NAME to delete: " + node.getName());
 
 	      // OTTENGO I DATASETS
-	      ResponseEntity<String> resultDatasets = restTemplate.getForEntity(idraBasePath + "/client/catalogues/" + nodeId + "/datasets", String.class);
+	      ResponseEntity<String> resultDatasets = restTemplate.getForEntity(idraBasePath + "/Idra/api/v1/" 
+	      + "/client/catalogues/" + nodeId + "/datasets", String.class);
 	      ObjectMapper objectMapper = new ObjectMapper();
 	      JsonNode jsonNode = objectMapper.readTree(resultDatasets.getBody());
 

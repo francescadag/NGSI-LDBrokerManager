@@ -1,20 +1,16 @@
 package it.eng.ngsild.broker.manager.controller.api;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import it.eng.idra.beans.ErrorResponse;
-import it.eng.idra.beans.dcat.SkosPrefLabel;
 import it.eng.ngsild.broker.manager.model.Configurations;
 import it.eng.ngsild.broker.manager.service.CatalogueService;
 
@@ -22,22 +18,20 @@ import it.eng.ngsild.broker.manager.service.CatalogueService;
 public class BrokerManagerController {
 
 	@Autowired
-	//@Qualifier("mainPhotoService")
 	private CatalogueService cs;
 
 	public BrokerManagerController() {
 		cs = new CatalogueService(); 
-
 	}
-	
 	
 	// AGGIUNTA CATALOGO, POST
 	@RequestMapping(value="/startProcess", method=RequestMethod.POST)  
-	@CrossOrigin(origins = "http://localhost:8080")
+	@CrossOrigin(origins = {"${idra.basepath}"})
 	public Response start(@Valid @RequestBody Configurations config) {
 		try {
 			System.out.println("\n\n ----- Il Broker Manager per ADD RICEVE l'ID: " + config.getCatalogueId());
 			System.out.println(" ----- e il Context broker Url: " + config.getContextBrokerUrl());
+
 			int status = cs.start(config);
 			
 	        if (status != 200 && status != 207 && status != 204 && status != -1 
@@ -74,33 +68,6 @@ public class BrokerManagerController {
 		}
 	}
 	
-	// RICEZIONE NOTIFICHE DA ORION, POST
-//	@RequestMapping(value="/newCatalogueNotify", method=RequestMethod.POST)  
-//	@CrossOrigin(origins = "http://localhost:1026")
-//	public Response newNotify(@Valid @RequestBody Notification n) {
-//		System.out.println("\n ---- NOTIFICA RICEVUTA: " + n);
-//		try {
-//			System.out.println("\n\n ----- L'Orion Manager riceve la notifica con id: " + n.getId());
-//			List<JsonNode> data = n.getData();
-//			 ObjectMapper objectMapper = new ObjectMapper();
-//			for (JsonNode entity: data) {
-//				String NGSILD_Id = objectMapper.readValue(entity.get("id"), String.class);
-//				String entityType = objectMapper.readValue(entity.get("type"), String.class);
-//				
-//				
-//						
-//			}
-//			
-//			//String res = cs.delete(catalogueId);
-//			//if (res.equals("DONE"))
-//			return Response.status(Response.Status.OK).build();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			return handleErrorResponse500(e);
-//		}
-//	}
-//	
 	
 	  /**
 	   * Handle error response 500.
