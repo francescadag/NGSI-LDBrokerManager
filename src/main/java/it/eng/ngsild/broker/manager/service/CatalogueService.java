@@ -65,28 +65,23 @@ public class CatalogueService  {
 	      ArrayList<String> allDatasets = new ArrayList<String>();
 	      ArrayList<String> allEntities = new ArrayList<String>();
 	      
-	      // OTTENGO IL CATALOGO
+	      // OTTENGO IL CATALOGO tramite API di Idra
 	      RestTemplate restTemplate = new RestTemplate();
 	      
 	      OdmsCatalogue node = restTemplate
 	    	      .getForObject(idraBasePath + "/Idra/api/v1/" + "/client/catalogues/" + nodeId, OdmsCatalogue.class);
 	      System.out.println("\n NOME CATALOGUE: " + node.getName());
 
-	      // OTTENGO I DATASETS
+	      // OTTENGO I DATASETS tramite API di Idra
 	      ResponseEntity<String> resultDatasets = restTemplate.getForEntity(idraBasePath + "/Idra/api/v1/" 
 	      + "/client/catalogues/" + nodeId + "/datasets", String.class);
 	      ObjectMapper objectMapper = new ObjectMapper();
 	      JsonNode jsonNode = objectMapper.readTree(resultDatasets.getBody());
-
-	      //String count = objectMapper.readValue(jsonNode.get("count").toString(), String.class);
+	      
 	      DcatDataset[] datasetsList = objectMapper.readValue(jsonNode.get("results"), DcatDataset[].class);
 	      List<DcatDataset> datasets = Arrays.asList(datasetsList);
-	      //System.out.println("\n DATASETS: " + resultDatasets.getBody());
-	      //String s = Integer.toString(datasetsList.size());
-	      
-	      
-	      // AGGIUNGO I DATASETS
-	      //List<DcatDataset> datasets = MetadataCacheManager.getAllDatasetsByOdmsCatalogue(node.getId());
+
+	      // AGGIUNTA DEI DATASETS
 	      for (DcatDataset dataset : datasets) {
 
 	        String idDataset = "\"urn:ngsi-ld:Catalogue:dataset:" + dataset.getId() + "\"";
@@ -95,7 +90,6 @@ public class CatalogueService  {
 	        }
 	        
 	        // AGENT del DATASET
-	        // CONTROLLO: durante la sync, se un AGENT CREATOR è già presente NON aggiungerlo
 	        if (dataset.getCreator() != null) {
 //		        if (dataset.getCreator() != null && (!dataset.getCreator().getIdentifier()
 //		        		.getValue().equals("n.d") || !dataset.getCreator().getIdentifier()
@@ -111,7 +105,6 @@ public class CatalogueService  {
 	          if (creator.getType() != null) {
 	        	  agentType = creator.getType().getValue();
 	          }
-	        		
 
 	          //int status = restRequest(api, "", "GET");
 	          //if (status != 200) {
@@ -134,7 +127,7 @@ public class CatalogueService  {
 
 	         // }
 	        }
-	        // CONTROLLO: durante la sync, se un AGENT PUBLISHER è già presente NON aggiungerlo
+
 //	        if (dataset.getPublisher() != null && (!dataset.getPublisher().getIdentifier()
 //	        		.getValue().equals("n.d") || !dataset.getPublisher().getIdentifier()
 //	        		.getValue().equals("")  )) {
@@ -173,7 +166,7 @@ public class CatalogueService  {
 	          //}
 	          
 	        }
-	        // CONTROLLO: durante la sync, se un AGENT RIGHT HOLDER è già presente NON aggiungerlo
+
 //	        if (dataset.getRightsHolder() != null && (!dataset.getRightsHolder().getIdentifier()
 //	        		.getValue().equals("n.d") || !dataset.getRightsHolder().getIdentifier()
 //	        		.getValue().equals("")  )) {
@@ -193,7 +186,7 @@ public class CatalogueService  {
 
 	          //int status = restRequest(api, "", "GET");
 	          //if (status != 200) {
-	            // AGGIUNTA dell'AGENT OUBLISHER
+	            // AGGIUNTA dell'AGENT PUBLISHER
 	            String type = "AgentDCAT-AP";
 	            String agent = holder.getName().getValue();
 	      
@@ -209,7 +202,6 @@ public class CatalogueService  {
 	            if (!allEntities.contains(data)) {
 	              allEntities.add(data);
 	            }
-
 	          //}
 	        }
 	        
@@ -242,7 +234,7 @@ public class CatalogueService  {
 	          String mediaType = distrib.optString("mediaType", "");
 	          String titleD = distrib.optString("title", "");
 	          String des = distrib.optString("description", "");
-	          String stat = distrib.optString("status", ""); // must be Completed, Deprecated, Under Development, Withdrawn 
+	          String stat = distrib.optString("status", ""); // a value between Completed, Deprecated, Under Development, Withdrawn 
 	          
 	          String idDis = "urn:ngsi-ld:DistributionDCAT-AP:id:" + identificat;
 	                
@@ -359,17 +351,17 @@ public class CatalogueService  {
 	            }
 
 	          //}
-	        } // FINE CONTROLLO DISTRIBUTION
+	        } 
 	        
-	        // CONTROLLO: durante la sync, se un DATASET è già presente NON aggiungerlo
+
 	        //urn:ngsi-ld:Dataset:id:HUZY:68185655
 	        String idDs = "urn:ngsi-ld:Dataset:id:" + dataset.getId();     
 	        String api = urlCB + "entities/" + idDs;
 
 	        //int status = restRequest(api, "", "GET");
 	        //if (status != 200) {
+	        
 	          // AGGIUNTA DATASET
-
 	          String des = dataset.getDescription().getValue();
 	          String descrDs = des.replace("\n", " ");
 	          descrDs = descrDs.replace("´", " ");
@@ -440,11 +432,6 @@ public class CatalogueService  {
 	          if (dataset.getFrequency() != null) {
 	        	  frequency = dataset.getFrequency().getValue();
 	          }
-//	          System.out.println("SOURCE lista: " + dataset.getSource());
-//	          System.out.println("SAMPLE lista: " + dataset.getSample());
-//	          System.out.println("isVer lista: " + dataset.getIsVersionOf());
-//	          System.out.println("hasVer lista: " + dataset.getHasVersion());
-//	          System.out.println("relRs lista: " + dataset.getRelatedResource());
 	          
 //	          if (dataset.getIsVersionOf() != null) {
 //	        	  System.out.println("isVersOf: " + dataset.getIsVersionOf());
@@ -479,7 +466,7 @@ public class CatalogueService  {
 	          String typeDs = "Dataset";
 	          api = urlCB + "entities/";
 	          String dataDs = "{ \"id\": \"" + idDs + "\", \"type\": \"" + typeDs + "\","
-	              + "\"description\": { " 							// ricontrolla: datasetDescription?
+	              + "\"description\": { " 							
 	              + "\"type\": \"Property\","
 	              + "\"value\": \"" + descr + "\" },"
 	              + "\"alternateName\": { " 
@@ -499,7 +486,7 @@ public class CatalogueService  {
 	              + " },"
 	              + "\"contactPoint\": { "
 	              + "\"type\": \"Property\","
-	              + "\"value\": " + contacts.toString() 		// quando è vuoto è stringa vuota
+	              + "\"value\": " + contacts.toString() 		
 	              + " },"
 	              + "\"keyword\": { "
 	              + "\"type\": \"Property\","
@@ -574,23 +561,16 @@ public class CatalogueService  {
 	              + "\"value\": \"" + dataset.getLandingPage().getValue() + "\" }"		// ricontrolla
 	              + " }";
 	          
-	          //System.out.println("DATA DS:" + dataDs);
-	          
 	          if (!allEntities.contains(dataDs)) {
 	            allEntities.add(dataDs);
 	          }
 
-	        //} // FINE CONTROLLO
-
 	      }
 
-	      
-	      // CONTROLLO: durante la sync, se il CATALOGUE è già presente NON aggiungerlo
 	      int identificator = node.getId();
 	      String id = "urn:ngsi-ld:Catalogue:id:" + identificator;
 	      String api = urlCB + "entities/" + id;
 	      //int status = restRequest(api, "", "GET");
-	      
 	      //if (status != 200) {
 
 	        ZonedDateTime dateModified = node.getLastUpdateDate();
@@ -661,15 +641,11 @@ public class CatalogueService  {
 	        if (!allEntities.contains(data)) {
 	          allEntities.add(data);
 	        }
-
-	      //} // FINE CONTROLLO CATALOGUE
 	      
-	      // CONTROLLO: durante la sync, se l'AGENT DEL CATALOGUE è già presente NON aggiungerlo
 	      identificator = node.getId();
 	      id = "urn:ngsi-ld:id:" + identificator;   
 	      api = urlCB + "entities/" + id;
 	      //int status = restRequest(api, "", "GET");
-	      
 	      //if (status != 200) {
 	        type = "AgentDCAT-AP";
 	        String agent = node.getPublisherName();
@@ -686,15 +662,8 @@ public class CatalogueService  {
 	          allEntities.add(data);
 	        }
 
-	      //}
-	      // POST CREATE in BATCH
-//	      api = urlCB + "entityOperations/create";
-//	      status = restRequest(api, allEntities.toString(), "POST");
-//	      
-//	      if (status != 200 && status != 207 && status != 204 && status != -1 
-//	          && status != 201 && status != 301) {
-//	        throw new Exception("------------ STATUS CREATE BATCH - ORION: " + status);
-//	      }
+
+	      // POST CREATE request in BATCH
 	      int status = 200;
 	      api = urlCB + "entityOperations/create";
 	      if (allEntities.size() > 200) {
@@ -706,8 +675,7 @@ public class CatalogueService  {
 	        status = restRequest(api, allEntities.toString(), "POST");
 	        System.out.println("STATUS CREATE " + status);
 	      }
-	   
-		
+
 	  return status;
 	}
 	
@@ -740,13 +708,9 @@ public class CatalogueService  {
 	      ObjectMapper objectMapper = new ObjectMapper();
 	      JsonNode jsonNode = objectMapper.readTree(resultDatasets.getBody());
 
-	      //String count = objectMapper.readValue(jsonNode.get("count").toString(), String.class);
 	      DcatDataset[] datasetsList = objectMapper.readValue(jsonNode.get("results"), DcatDataset[].class);
 	      List<DcatDataset> datasets = Arrays.asList(datasetsList);
-	      //String s = Integer.toString(datasetsList.size());
 
-
-	      
 	      // ELIMINAZIONE
 	      ArrayList<String> listId = new ArrayList<String>();
 	  
