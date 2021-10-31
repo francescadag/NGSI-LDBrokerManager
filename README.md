@@ -2,7 +2,7 @@
 
 NGSI-LD Broker Manager is a component developed in Java with Spring.
 Its purpose is to communicate with [Idra](https://github.com/OPSILab/Idra) and with a Context Broker, such as
-the [Orion Context Broker-LD](https://github.com/FIWARE/context.Orion-LD) in order to map the DCAT-AP metadata 
+the [Orion-LD Context Broker](https://github.com/FIWARE/context.Orion-LD) in order to map the DCAT-AP metadata 
 of the federated catalogues in Idra, according to the NGSI-LD meta-model.
 To do this, these [specifications](https://github.com/smart-data-models/dataModel.DCAT-AP) are used.
 
