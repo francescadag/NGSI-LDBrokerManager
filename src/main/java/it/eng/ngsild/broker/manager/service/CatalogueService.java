@@ -404,8 +404,8 @@ public class CatalogueService  {
 	            	if(label.getValue() != "")
 	            		themes.add("\"" + label.getValue() + "\"");
 	          }
-	          if (themes.size() == 0)
-	        	  themes.add("");
+//	          if (themes.size() == 0)
+//	        	  themes.add("");
 	          
 	          ArrayList<String> keywords = new ArrayList<String>();
 	          for (String keyw: dataset.getKeywords()) {

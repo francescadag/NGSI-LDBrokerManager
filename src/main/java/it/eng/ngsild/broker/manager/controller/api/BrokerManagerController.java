@@ -49,7 +49,7 @@ public class BrokerManagerController {
 	
 	// CANCELLAZIONE CATALOGO, POST
 	@RequestMapping(value="/deleteCatalogue", method=RequestMethod.POST)  
-	@CrossOrigin(origins = "http://localhost:8080")
+	@CrossOrigin(origins = {"${idra.basepath}"})
 	public Response delete(@Valid @RequestBody Configurations catalogueId) {
 		try {
 			System.out.println("\n\n ----- Il Broker Manager per DELETE RICEVE l'ID: " + catalogueId.getCatalogueId());

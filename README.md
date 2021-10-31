@@ -1,14 +1,17 @@
 # NGSI-LD Broker Manager
 
 NGSI-LD Broker Manager is a component developed in Java with Spring.
-Its purpose is to communicate with [Idra](https://github.com/OPSILab/Idra) and the [Orion Context Broker-LD](https://github.com/FIWARE/context.Orion-LD) 
-in order to map the DCAT-AP metadata of the federated catalogues in Idra, according to the NGSI-LD meta-model.
-To do this, these [specifications](https://github.com/smart-data-models/dataModel.DCAT-AP) 
-are used.
+Its purpose is to communicate with [Idra](https://github.com/OPSILab/Idra) and with a Context Broker, such as
+the [Orion Context Broker-LD](https://github.com/FIWARE/context.Orion-LD) in order to map the DCAT-AP metadata 
+of the federated catalogues in Idra, according to the NGSI-LD meta-model.
+To do this, these [specifications](https://github.com/smart-data-models/dataModel.DCAT-AP) are used.
 
 By using this external and optional component, the DCAT-AP metadata are provided in NGSI-LD in order to be accessible 
 also through the Context Broker and take advantage from its publish and subscribe approach.
 This approach that allows context data subscriptions is described in its [documentation](https://ngsi-ld-tutorials.readthedocs.io/en/latest/subscriptions.html).
+
+The possible operations, through REST APIs, to communicate with the Context Broker are defined in the specific
+[documentation](https://ngsi-ld-tutorials.readthedocs.io/en/latest/ngsi-ld-operations.html).
 
 ## Asynchronous notifications
 
@@ -24,7 +27,7 @@ curl localhost:1026/ngsi-ld/v1/subscriptions/
 
 Below are some examples of requests to the Context Broker to obtain information about the federated catalogues in Idra.
 
-### Request for notification regarding the federation of a specific catalogue
+### Request for notification regarding the federation of a specific Catalogue
 
 ```yml
 {
@@ -43,13 +46,13 @@ Below are some examples of requests to the Context Broker to obtain information 
 }
 ```
 
-### Request for notification relating to the modification of the metadata of a Dataset or to the addition of a new Dataset
+### Request for notification relating to the modification of the metadata of a Dataset (or Distribution) and to the addition of a new Dataset (or Distribution)
 
 ```yml
 {
   "description": "Notify me on the creation or modification of a Dataset",
   "type": "Subscription",
-  "entities": [{"type": "Dataset"}],
+  "entities": [{"type": "Dataset"}, {"type": "DistributionDCAT-AP"}],
   "notification": {
     "attributes": ["title"],
     "format": "normalized",
