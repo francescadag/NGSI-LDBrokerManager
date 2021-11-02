@@ -13,6 +13,15 @@ This approach that allows context data subscriptions is described in its [docume
 The possible operations, through REST APIs, to communicate with the Context Broker are defined in the specific
 [documentation](https://ngsi-ld-tutorials.readthedocs.io/en/latest/ngsi-ld-operations.html).
 
+## Installation and configurations
+
+It is a Spring Boot application that by default has the TCP/IP port set to the value 8082. 
+To change this configuration, simply change the value of the following configuration parameter in the 
+**application.properties** file:
+```yml
+server.port = 8082
+```
+
 ## Asynchronous notifications
 
 The Orion Context Broker offers also an asynchronous notification mechanism: applications can subscribe to changes of context 
