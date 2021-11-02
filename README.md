@@ -25,7 +25,7 @@ In this same file it is also possible to change the base path of the Idra applic
 it is necessary to modify the following parameter:
 ```yml
 idra.basepath = http://localhost:8080
-``
+```
 
 ## Asynchronous notifications
 
