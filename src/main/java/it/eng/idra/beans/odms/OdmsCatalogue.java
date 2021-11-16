@@ -20,8 +20,6 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import it.eng.idra.beans.dcat.DcatApFormat;
 import it.eng.idra.beans.dcat.DcatApProfile;
-import it.eng.idra.beans.orion.OrionCatalogueConfiguration;
-import it.eng.idra.beans.sparql.SparqlCatalogueConfiguration;
 import it.eng.idra.beans.webscraper.WebScraperSitemap;
 
 //import it.eng.idra.scheduler.IdraScheduler;
@@ -29,27 +27,8 @@ import it.eng.idra.beans.webscraper.WebScraperSitemap;
 import it.eng.idra.scheduler.exception.SchedulerNotInitialisedException;
 import it.eng.idra.utils.CommonUtil;
 import it.eng.idra.utils.JsonRequired;
-import it.eng.idra.utils.OdmsCatalogueAdditionalConfigurationDeserializer;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.PostPersist;
-import javax.persistence.PostRemove;
-import javax.persistence.PostUpdate;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 
 // TODO: Auto-generated Javadoc
@@ -57,178 +36,137 @@ import org.apache.commons.lang.StringUtils;
  * The Class OdmsCatalogue.
  */
 // Represents a federated ODMS Node  
-@Entity
-@Table(name = "odms")
+
 public class OdmsCatalogue {
 
   /** The id. */
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Expose
   private int id;
 
   /** The name. */
   @JsonRequired
-  @Column(name = "name", unique = true, nullable = false) // TODO: levare unique + mettere url-api
   @Expose
   private String name;
 
   /** The host. */
   @JsonRequired
-  @Column(name = "host", unique = true, nullable = false)
   @Expose
   private String host;
 
   /** The homepage. */
   @JsonRequired
-  @Column(name = "homepage", unique = false, nullable = false)
   @Expose
   private String homepage;
 
   /** The api key. */
-  @Column(name = "api_key", unique = false, nullable = true)
   @SerializedName(value = "APIKey")
   private String apiKey;
 
   /** The node type. */
   @JsonRequired
-  @Column(name = "type", unique = false, nullable = false)
-  @Enumerated(EnumType.STRING)
   @Expose
   private OdmsCatalogueType nodeType;
 
   /** The federation level. */
   @JsonRequired
-  @Column(name = "federation_level", unique = false, nullable = false)
-  @Enumerated(EnumType.STRING)
   private OdmsCatalogueFederationLevel federationLevel;
 
   /** The publisher name. */
   @JsonRequired
-  @Column(name = "publisher_name", unique = false, nullable = false)
   @Expose
   private String publisherName;
 
   /** The publisher url. */
-  @Column(name = "publisher_url", unique = false, nullable = true)
   @Expose
   private String publisherUrl;
 
   /** The publisher email. */
-  @Column(name = "publisher_email", unique = false, nullable = true)
   @Expose
   private String publisherEmail;
 
   /** The dataset count. */
-  @Column(name = "dataset_count")
   @Expose
   private int datasetCount;
 
   /** The node state. */
-  @Column(name = "state", unique = false, nullable = false)
-  @Enumerated(EnumType.STRING)
   @Expose
   private OdmsCatalogueState nodeState;
 
   /** The register date. */
-  @Column(name = "register_date", updatable = true)
   private ZonedDateTime registerDate;
 
   /** The last update date. */
-  @Column(name = "last_update_date")
   @Expose
   private ZonedDateTime lastUpdateDate;
 
   /** The refresh period. */
   @JsonRequired
-  @Column(name = "refresh_period")
   private int refreshPeriod;
 
   /** The description. */
-  @Column(name = "description", columnDefinition = "TEXT")
   @Expose
   private String description;
 
   // @Column(name = "image", columnDefinition = "LONGTEXT")
 
   /** The image. */
-  @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-  @JoinColumn(name = "image_id")
   @Expose
   private OdmsCatalogueImage image;
 
   /** The synch lock. */
-  @Transient
   private OdmsSynchLock synchLock;
 
   /** The rdf count. */
-  @Column(name = "rdfCount")
   private int rdfCount;
 
   /** The dataset start. */
-  @Column(name = "datasetStart")
   private int datasetStart;
 
   /** The location. */
-  @Column(name = "location", columnDefinition = "LONGTEXT")
   @Expose
   private String location;
 
   /** The location description. */
-  @Column(name = "locationDescription", columnDefinition = "MEDIUMTEXT")
   @Expose
   private String locationDescription;
 
   /** The message count. */
-  @Transient
   private Long messageCount;
 
   /** The sitemap. */
-  @OneToOne(orphanRemoval = true, cascade = { CascadeType.ALL, CascadeType.REMOVE })
-  @JoinColumn(name = "sitemap_id")
   private WebScraperSitemap sitemap;
 
   /** The dump string. */
-  @Transient
   private String dumpString;
 
   /** The dump file path. */
-  @Column(name = "dumpFilePath", unique = true, nullable = true)
   private String dumpFilePath;
 
   /** The dump url. */
-  @Column(name = "dumpURL", unique = true, nullable = true)
   @SerializedName(value = "dumpURL")
   private String dumpUrl;
 
   /** The is active. */
-  @Column(name = "isActive", nullable = true)
   @Expose
   private Boolean isActive;
 
   /** The country. */
-  @Column(name = "country", nullable = true)
   @Expose
   private String country;
 
   /** The category. */
-  @Column(name = "category", nullable = true)
   @Expose
   private String category;
 
-  /** The additional config. */
-  @OneToOne(orphanRemoval = true, cascade = { CascadeType.ALL, CascadeType.REMOVE })
-  @JoinColumn(name = "additionalconfig_id")
-  @JsonAdapter(OdmsCatalogueAdditionalConfigurationDeserializer.class)
-  private OdmsCatalogueAdditionalConfiguration additionalConfig;
+//  /** The additional config. */
+//  @JsonAdapter(OdmsCatalogueAdditionalConfigurationDeserializer.class)
+//  private OdmsCatalogueAdditionalConfiguration additionalConfig;
 
   /** The dcat profile. */
   // @Transient
   private DcatApProfile dcatProfile;
 
   /** The dcat format. */
-  @Transient
   private DcatApFormat dcatFormat;
 
   /**
@@ -1015,23 +953,23 @@ public class OdmsCatalogue {
     this.category = category;
   }
 
-  /**
-   * Gets the additional config.
-   *
-   * @return the additional config
-   */
-  public OdmsCatalogueAdditionalConfiguration getAdditionalConfig() {
-    return additionalConfig;
-  }
+//  /**
+//   * Gets the additional config.
+//   *
+//   * @return the additional config
+//   */
+//  public OdmsCatalogueAdditionalConfiguration getAdditionalConfig() {
+//    return additionalConfig;
+//  }
 
-  /**
-   * Sets the additional config.
-   *
-   * @param orionConfig the new additional config
-   */
-  public void setAdditionalConfig(OdmsCatalogueAdditionalConfiguration orionConfig) {
-    this.additionalConfig = orionConfig;
-  }
+//  /**
+//   * Sets the additional config.
+//   *
+//   * @param orionConfig the new additional config
+//   */
+//  public void setAdditionalConfig(OdmsCatalogueAdditionalConfiguration orionConfig) {
+//    this.additionalConfig = orionConfig;
+//  }
 
   /**
    * Checks if is online.
@@ -1092,7 +1030,6 @@ public class OdmsCatalogue {
   /**
    * On create.
    */
-  @PrePersist
   protected void onCreate() {
     lastUpdateDate = registerDate = ZonedDateTime.now(ZoneOffset.UTC);
   }
@@ -1100,7 +1037,6 @@ public class OdmsCatalogue {
   /**
    * On update.
    */
-  @PreUpdate
   protected void onUpdate() {
     lastUpdateDate = ZonedDateTime.now(ZoneOffset.UTC);
   }
@@ -1130,7 +1066,6 @@ public class OdmsCatalogue {
   /**
    * Post update.
    */
-  @PostUpdate
   protected void postUpdate() {
 
   }

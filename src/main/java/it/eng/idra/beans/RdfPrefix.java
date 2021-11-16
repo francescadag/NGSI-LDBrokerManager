@@ -16,35 +16,22 @@
 package it.eng.idra.beans;
 
 import it.eng.idra.utils.JsonRequired;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class RdfPrefix.
  */
-@Entity
-@Table(name = "prefix")
 public class RdfPrefix {
 
   /** The id. */
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   /** The prefix. */
   @JsonRequired
-  @Column(name = "prefix")
   private String prefix;
 
   /** The namespace. */
   @JsonRequired
-  @Column(name = "namespace")
   private String namespace;
 
   /**

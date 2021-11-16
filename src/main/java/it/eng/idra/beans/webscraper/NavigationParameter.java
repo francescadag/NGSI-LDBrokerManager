@@ -16,26 +16,11 @@
 package it.eng.idra.beans.webscraper;
 
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class NavigationParameter.
  */
-@Entity
-@Table(name = "odms_sitemap_navigationParameter")
 public class NavigationParameter {
 
   /** The id. */
@@ -113,9 +98,6 @@ public class NavigationParameter {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
   public String getId() {
     return id;
   }
@@ -224,10 +206,6 @@ public class NavigationParameter {
    *
    * @return the enum values
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "odms_sitemap_navigationParameter_enumValues", joinColumns = {
-      @JoinColumn(referencedColumnName = "id", name = "navigationParameter_id") })
   public List<String> getEnumValues() {
     return enumValues;
   }
@@ -246,10 +224,7 @@ public class NavigationParameter {
    *
    * @return the page selectors
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany(cascade = { CascadeType.ALL })
   // @Fetch(FetchMode.SELECT)
-  @JoinColumns({ @JoinColumn(name = "navigationParameter_id", referencedColumnName = "id") })
   public List<PageSelector> getPageSelectors() {
     return pageSelectors;
   }

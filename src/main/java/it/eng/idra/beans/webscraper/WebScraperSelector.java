@@ -20,19 +20,11 @@ import it.eng.idra.beans.IdraProperty;
 import it.eng.idra.utils.PropertyManager;
 import java.util.Arrays;
 import java.util.List;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-import org.hibernate.annotations.GenericGenerator;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class WebScraperSelector.
  */
-@MappedSuperclass
 // @Table(name = "odms_sitemap_selector")
 public abstract class WebScraperSelector {
 
@@ -102,9 +94,6 @@ public abstract class WebScraperSelector {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
   public String getId() {
     return id;
   }
@@ -127,7 +116,6 @@ public abstract class WebScraperSelector {
    * @return the parent selectors
    */
   // joinColumns = { @JoinColumn(name = "selector_id") })
-  @Transient
   public List<String> getParentSelectors() {
     return parentSelectors;
   }
@@ -146,7 +134,6 @@ public abstract class WebScraperSelector {
    *
    * @return the type
    */
-  @Enumerated(EnumType.STRING)
   public WebScraperSelectorType getType() {
     return type;
   }
@@ -219,7 +206,6 @@ public abstract class WebScraperSelector {
    *
    * @return the stop values
    */
-  @Transient
   public List<String> getStopValues() {
     return stopValues;
   }

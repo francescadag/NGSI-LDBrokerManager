@@ -19,17 +19,10 @@ import com.google.gson.annotations.SerializedName;
 //import it.eng.idra.cache.CacheContentType;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.SKOS;
 //import org.apache.solr.common.SolrDocument;
 //import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.annotations.GenericGenerator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,8 +31,6 @@ import org.json.JSONObject;
  * Represents a SKOS Concept label in a specific language.
  */
 
-@Entity
-@Table(name = "dcat_concept_prefLabel")
 public class SkosPrefLabel {
 
   /** The id. */
@@ -83,10 +74,6 @@ public class SkosPrefLabel {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
-  @Column(name = "prefLabel_id")
   public String getId() {
     return id;
   }
@@ -123,7 +110,6 @@ public class SkosPrefLabel {
    *
    * @return the rdf class
    */
-  @Transient
   public static Resource getRdfClass() {
     return RDFClass;
   }

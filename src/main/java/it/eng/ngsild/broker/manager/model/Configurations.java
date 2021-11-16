@@ -1,17 +1,13 @@
 package it.eng.ngsild.broker.manager.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
-@Entity
 //@NoArgsConstructor
 //@AllArgsConstructor
 //@Getter
 //@Setter
 //@ToString
 public class Configurations {
-	
-	@Id
+
 	private String catalogueId;
 	private String contextBrokerUrl;
 	

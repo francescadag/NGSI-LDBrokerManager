@@ -17,29 +17,17 @@ package it.eng.idra.beans.dcat;
 
 import com.google.gson.annotations.SerializedName;
 //import it.eng.idra.cache.CacheContentType;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.vocabulary.DCTerms;
 import org.apache.jena.vocabulary.RDFS;
 //import org.apache.solr.common.SolrDocument;
 //import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.annotations.GenericGenerator;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class DctPeriodOfTime.
  */
-@Entity
-@Table(name = "dcat_periodOfTime")
 public class DctPeriodOfTime {
 
   /** The Constant RDFClass. */
@@ -106,10 +94,6 @@ public class DctPeriodOfTime {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
-  @Column(name = "periodOfTime_id")
   public String getId() {
     return id;
   }
@@ -146,8 +130,6 @@ public class DctPeriodOfTime {
    *
    * @return the start date
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "startDate")) })
   public DcatProperty getStartDate() {
     return startDate;
   }
@@ -166,8 +148,6 @@ public class DctPeriodOfTime {
    *
    * @return the end date
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "endDate")) })
   public DcatProperty getEndDate() {
     return endDate;
   }
@@ -186,7 +166,6 @@ public class DctPeriodOfTime {
    *
    * @return the rdf class
    */
-  @Transient
   public static Resource getRdfClass() {
     return RDFClass;
   }

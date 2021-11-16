@@ -17,15 +17,6 @@ package it.eng.idra.beans.dcat;
 
 import com.google.gson.annotations.SerializedName;
 //import it.eng.idra.cache.CacheContentType;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.sparql.vocabulary.FOAF;
@@ -35,15 +26,12 @@ import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.SKOS;
 //import org.apache.solr.common.SolrDocument;
 //import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.annotations.GenericGenerator;
 import org.json.JSONObject;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class DctLicenseDocument.
  */
-@Entity
-@Table(name = "dcat_licenseDocument")
 public class DctLicenseDocument {
 
   /** The Constant RDFClass. */
@@ -98,10 +86,6 @@ public class DctLicenseDocument {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
-  @Column(name = "licenseDocument_id")
   public String getId() {
     return id;
   }
@@ -120,8 +104,6 @@ public class DctLicenseDocument {
    *
    * @return the name
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "name")) })
   public DcatProperty getName() {
     return name;
   }
@@ -149,8 +131,6 @@ public class DctLicenseDocument {
    *
    * @return the type
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "type")) })
   public DcatProperty getType() {
     return type;
   }
@@ -178,9 +158,6 @@ public class DctLicenseDocument {
    *
    * @return the version info
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "versionInfo")) })
   public DcatProperty getVersionInfo() {
     return versionInfo;
   }
@@ -244,7 +221,6 @@ public class DctLicenseDocument {
    *
    * @return the rdf class
    */
-  @Transient
   public static Resource getRdfClass() {
     return RDFClass;
   }

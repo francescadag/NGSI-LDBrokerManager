@@ -17,38 +17,24 @@ package it.eng.idra.beans.odms;
 
 import com.google.gson.annotations.SerializedName;
 import java.time.ZonedDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class OdmsCatalogueMessage.
  */
-@Entity
-@Table(name = "node_messages")
 public class OdmsCatalogueMessage {
 
   /** The id. */
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   /** The node id. */
-  @Column(name = "nodeID", unique = false, nullable = false)
   @SerializedName(value = "nodeID")
   private int nodeId;
 
   /** The message. */
-  @Column(name = "message", unique = false, nullable = false, columnDefinition = "LONGTEXT")
   private String message;
 
   /** The date. */
-  @Column(name = "date")
   // @Type(type="date")
   private ZonedDateTime date;
 

@@ -18,73 +18,56 @@ package it.eng.idra.beans;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class Datalet.
  */
-@Entity
-@Table(name = "distribution_datalet")
 public class Datalet implements Serializable {
 
   /** The Constant serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /** The id. */
-  @Id
   // @GeneratedValue(generator = "uuid")
   // @GenericGenerator(name = "uuid", strategy = "uuid2")
   private String id;
 
   /** The datalet html. */
-  @Column(name = "datalet_html", columnDefinition = "LONGTEXT")
   @SerializedName(value = "datalet_html")
   private String dataletHtml;
 
   /** The title. */
-  @Column(name = "title")
   private String title;
 
   /** The description. */
-  @Column(name = "description")
   private String description;
 
   // This field is true when the title is created by Federation Manager otherwise
   /** The custom title. */
   // is false
-  @Column(name = "customTitle")
   private boolean customTitle;
 
   /** The register date. */
-  @Column(name = "register_date", updatable = false)
   // @Temporal(TemporalType.TIMESTAMP)
   private ZonedDateTime registerDate;
 
   /** The last seen date. */
-  @Column(name = "last_seen_date", updatable = true)
   // @Temporal(TemporalType.TIMESTAMP)
   private ZonedDateTime lastSeenDate;
 
   /** The views. */
-  @Column(name = "views")
   private int views;
 
   /** The dataset id. */
-  @Column(name = "dataset_id")
   @SerializedName(value = "datasetID")
   private String datasetId;
 
   /** The node id. */
-  @Column(name = "nodeID")
   @SerializedName(value = "nodeID")
   private String nodeId;
 
   /** The distribution id. */
-  @Column(name = "distribution_id")
   @SerializedName(value = "distributionID")
   private String distributionId;
 

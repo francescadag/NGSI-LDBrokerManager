@@ -33,10 +33,9 @@ import it.eng.idra.beans.Log;
 import it.eng.idra.beans.LogsRequest;
 import it.eng.idra.beans.PasswordChange;
 import it.eng.idra.beans.RdfPrefix;
-import it.eng.idra.beans.RemoteCatalogue;
 import it.eng.idra.beans.User;
-import it.eng.idra.beans.ckan.CkanErrorResponse;
-import it.eng.idra.beans.ckan.CkanSuccessResponse;
+//import it.eng.idra.beans.ckan.CkanErrorResponse;
+//import it.eng.idra.beans.ckan.CkanSuccessResponse;
 import it.eng.idra.beans.dcat.DcatDataset;
 import it.eng.idra.beans.dcat.DcatDistribution;
 import it.eng.idra.beans.dcat.DcatProperty;
@@ -48,20 +47,6 @@ import it.eng.idra.beans.dcat.SpdxChecksum;
 import it.eng.idra.beans.odms.OdmsCatalogue;
 import it.eng.idra.beans.odms.OdmsCatalogueImage;
 import it.eng.idra.beans.odms.OdmsCatalogueMessage;
-import it.eng.idra.beans.orion.OrionDistributionConfig;
-//import it.eng.idra.beans.search.DcatApSearchResult;
-//import it.eng.idra.beans.search.SearchFacet;
-//import it.eng.idra.beans.search.SearchFilter;
-//import it.eng.idra.beans.search.SearchRequest;
-//import it.eng.idra.beans.search.SearchResult;
-//import it.eng.idra.beans.search.SparqlSearchRequest;
-//import it.eng.idra.beans.spod.SpodDataset;
-//import it.eng.idra.beans.spod.SpodExtraDeserializer;
-//import it.eng.idra.beans.spod.SpodGroupDeserializer;
-//import it.eng.idra.beans.spod.SpodTagDeserializer;
-import it.eng.idra.beans.statistics.KeywordStatistics;
-import it.eng.idra.beans.statistics.KeywordStatisticsResult;
-import it.eng.idra.beans.statistics.StatisticsRequest;
 //import it.eng.idra.statistics.PlatformStatistcs;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -128,13 +113,13 @@ public final class GsonUtil {
   public static Type prefixType = new TypeToken<RdfPrefix>() {
   }.getType();
 
-  /** The rem cat type. */
-  public static Type remCatType = new TypeToken<RemoteCatalogue>() {
-  }.getType();
-
-  /** The rem cat list type. */
-  public static Type remCatListType = new TypeToken<List<RemoteCatalogue>>() {
-  }.getType();
+//  /** The rem cat type. */
+//  public static Type remCatType = new TypeToken<RemoteCatalogue>() {
+//  }.getType();
+//
+//  /** The rem cat list type. */
+//  public static Type remCatListType = new TypeToken<List<RemoteCatalogue>>() {
+//  }.getType();
 
   /** The user type. */
   public static Type userType = new TypeToken<User>() {
@@ -148,17 +133,17 @@ public final class GsonUtil {
   public static Type stringListType = new TypeToken<List<String>>() {
   }.getType();
 
-  /** The keyword statistics result list type. */
-  public static Type keywordStatisticsResultListType = 
-      new TypeToken<List<KeywordStatisticsResult>>() {}.getType();
-
-  /** The keyword statistics type. */
-  public static Type keywordStatisticsType = new TypeToken<KeywordStatistics>() {
-  }.getType();
-
-  /** The statistics request type. */
-  public static Type statisticsRequestType = new TypeToken<StatisticsRequest>() {
-  }.getType();
+//  /** The keyword statistics result list type. */
+//  public static Type keywordStatisticsResultListType = 
+//      new TypeToken<List<KeywordStatisticsResult>>() {}.getType();
+//
+//  /** The keyword statistics type. */
+//  public static Type keywordStatisticsType = new TypeToken<KeywordStatistics>() {
+//  }.getType();
+//
+//  /** The statistics request type. */
+//  public static Type statisticsRequestType = new TypeToken<StatisticsRequest>() {
+//  }.getType();
 
   /** The log type. */
   public static Type logType = new TypeToken<Log>() {
@@ -208,17 +193,17 @@ public final class GsonUtil {
 //  public static Type spodDatasetType = new TypeToken<SpodDataset>() {
 //  }.getType();
 
-  /** The dataset list type. */
-  public static Type datasetListType = new TypeToken<List<DcatDataset>>() {
-  }.getType();
-
-  /** The orion distribution list type. */
-  public static Type orionDistributionListType = new TypeToken<List<OrionDistributionConfig>>() {
-  }.getType();
-
-  /** The orion distribution type. */
-  public static Type orionDistributionType = new TypeToken<OrionDistributionConfig>() {
-  }.getType();
+//  /** The dataset list type. */
+//  public static Type datasetListType = new TypeToken<List<DcatDataset>>() {
+//  }.getType();
+//
+//  /** The orion distribution list type. */
+//  public static Type orionDistributionListType = new TypeToken<List<OrionDistributionConfig>>() {
+//  }.getType();
+//
+//  /** The orion distribution type. */
+//  public static Type orionDistributionType = new TypeToken<OrionDistributionConfig>() {
+//  }.getType();
 
   /** The sparql search request type. */
 //  public static Type sparqlSearchRequestType = new TypeToken<SparqlSearchRequest>() {
@@ -268,13 +253,13 @@ public final class GsonUtil {
 //  public static Type platformStatsType = new TypeToken<PlatformStatistcs>() {
 //  }.getType();
 
-  /** The ckan succ type. */
-  public static Type ckanSuccType = new TypeToken<CkanSuccessResponse<Object>>() {
-  }.getType();
-
-  /** The ckan err type. */
-  public static Type ckanErrType = new TypeToken<CkanErrorResponse>() {
-  }.getType();
+//  /** The ckan succ type. */
+//  public static Type ckanSuccType = new TypeToken<CkanSuccessResponse<Object>>() {
+//  }.getType();
+//
+//  /** The ckan err type. */
+//  public static Type ckanErrType = new TypeToken<CkanErrorResponse>() {
+//  }.getType();
 
   /** The gson builder. */
   private static GsonBuilder gsonBuilder = new GsonBuilder()
@@ -302,7 +287,7 @@ public final class GsonUtil {
       .registerTypeAdapter(RdfPrefix.class, new AnnotatedDeserializer<RdfPrefix>())
       .registerTypeAdapter(User.class, new AnnotatedDeserializer<User>())
       .registerTypeAdapter(PasswordChange.class, new AnnotatedDeserializer<PasswordChange>())
-      .registerTypeAdapter(StatisticsRequest.class, new AnnotatedDeserializer<StatisticsRequest>())
+//      .registerTypeAdapter(StatisticsRequest.class, new AnnotatedDeserializer<StatisticsRequest>())
       .registerTypeAdapter(LogsRequest.class, new AnnotatedDeserializer<LogsRequest>())
 //      .registerTypeAdapter(SearchRequest.class, new AnnotatedDeserializer<LogsRequest>())
 //      .registerTypeAdapter(SearchFilter.class, new AnnotatedDeserializer<LogsRequest>())

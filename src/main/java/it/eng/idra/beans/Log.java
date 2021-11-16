@@ -16,19 +16,11 @@
 package it.eng.idra.beans;
 
 import java.time.ZonedDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class Log.
  */
-@Entity
-@Table(name = "logs")
 public class Log {
 
   /** The id. */
@@ -58,9 +50,6 @@ public class Log {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
   public int getId() {
     return this.id;
   }
@@ -79,7 +68,6 @@ public class Log {
    *
    * @return the logger
    */
-  @Column(name = "logger")
   public String getLogger() {
     return logger;
   }
@@ -98,7 +86,6 @@ public class Log {
    *
    * @return the message
    */
-  @Column(name = "message", unique = false, nullable = false, columnDefinition = "LONGTEXT")
   public String getMessage() {
     return message;
   }
@@ -117,7 +104,6 @@ public class Log {
    *
    * @return the level
    */
-  @Column(name = "level")
   public String getLevel() {
     return level;
   }
@@ -136,7 +122,6 @@ public class Log {
    *
    * @return the dated
    */
-  @Column(name = "dated")
   // @Type(type="date")
   public ZonedDateTime getDated() {
     return timestamp;

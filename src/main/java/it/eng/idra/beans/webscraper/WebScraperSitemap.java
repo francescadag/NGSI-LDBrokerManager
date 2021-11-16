@@ -16,25 +16,10 @@
 package it.eng.idra.beans.webscraper;
 
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class WebScraperSitemap.
  */
-@Entity
-@Table(name = "odms_sitemap")
 public class WebScraperSitemap {
 
   /** The id. */
@@ -75,9 +60,6 @@ public class WebScraperSitemap {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
   public String getId() {
     return id;
   }
@@ -114,10 +96,6 @@ public class WebScraperSitemap {
    *
    * @return the dataset selectors
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany(cascade = { CascadeType.ALL })
-  // @Fetch(FetchMode.SELECT)
-  @JoinColumns({ @JoinColumn(name = "sitemap_id", referencedColumnName = "id") })
   public List<DatasetSelector> getDatasetSelectors() {
     return datasetSelectors;
   }
@@ -136,8 +114,6 @@ public class WebScraperSitemap {
    *
    * @return the navigation parameter
    */
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "navigationParameter_id")
   public NavigationParameter getNavigationParameter() {
     return navigationParameter;
   }

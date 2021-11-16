@@ -16,22 +16,12 @@
 package it.eng.idra.beans.dcat;
 
 import com.google.gson.annotations.SerializedName;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.VCARD4;
 //import org.apache.solr.common.SolrDocument;
 //import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.annotations.GenericGenerator;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -40,8 +30,6 @@ import org.hibernate.annotations.GenericGenerator;
  * @author
  */
 
-@Entity
-@Table(name = "dcat_vcard")
 public class VcardOrganization {
 
   /** The Constant RDFClass. */
@@ -61,7 +49,6 @@ public class VcardOrganization {
 
   /** The node id. */
   @SerializedName(value = "nodeID")
-  @Column(name = "nodeID")
   private String nodeId;
 
   /** The has email. */
@@ -134,7 +121,6 @@ public class VcardOrganization {
    *
    * @return the rdf class
    */
-  @Transient
   public static Resource getRdfClass() {
     return RDFClass;
   }
@@ -144,10 +130,6 @@ public class VcardOrganization {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
-  @Column(name = "vcard_id")
   public String getId() {
     return id;
   }
@@ -203,7 +185,6 @@ public class VcardOrganization {
    *
    * @return the property uri
    */
-  @Transient
   public String getPropertyUri() {
     return propertyUri;
   }
@@ -222,9 +203,6 @@ public class VcardOrganization {
    *
    * @return the fn
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "fn", length = 500)) })
   public DcatProperty getFn() {
     return fn;
   }
@@ -243,8 +221,6 @@ public class VcardOrganization {
    *
    * @return the checks for email
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "hasEmail")) })
   public DcatProperty getHasEmail() {
     return hasEmail;
   }
@@ -263,8 +239,6 @@ public class VcardOrganization {
    *
    * @return the checks for url
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "hasURL")) })
   public DcatProperty getHasUrl() {
     return hasUrl;
   }
@@ -283,9 +257,6 @@ public class VcardOrganization {
    *
    * @return the checks for telephone value
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "hasTelephoneValue")) })
   public DcatProperty getHasTelephoneValue() {
     return hasTelephoneValue;
   }
@@ -304,10 +275,6 @@ public class VcardOrganization {
    *
    * @return the checks for telephone type
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "hasTelephoneType")) })
-
   public DcatProperty getHasTelephoneType() {
     return hasTelephoneType;
   }
