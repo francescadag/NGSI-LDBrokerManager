@@ -23,22 +23,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.sparql.vocabulary.FOAF;
@@ -53,10 +37,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 //import org.apache.solr.common.SolrDocument;
 //import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.Where;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -68,8 +48,6 @@ import org.json.JSONObject;
  */
 
 // @Embeddable
-@Table(name = "dcat_distribution")
-@Entity
 public class DcatDistribution implements Serializable {
 
   /** The Constant serialVersionUID. */
@@ -83,7 +61,6 @@ public class DcatDistribution implements Serializable {
 
   /** The stored rdf. */
   @SerializedName(value = "storedRDF")
-  @Column(name = "storedRDF")
   private boolean storedRDF;
 
   /** The node id. */
@@ -96,9 +73,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
   public String getId() {
     return id;
   }
@@ -297,7 +271,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the rdf class
    */
-  @Transient
   public static Resource getRdfClass() {
     return RDFClass;
   }
@@ -343,10 +316,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the title
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "title", columnDefinition = "LONGTEXT")) })
   public DcatProperty getTitle() {
     return title;
   }
@@ -374,10 +343,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the access url
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "accessURL", length = 65535, columnDefinition = "Text")) })
   public DcatProperty getAccessURL() {
     return accessURL;
   }
@@ -405,10 +370,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the description
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "description", columnDefinition = "LONGTEXT")) })
   public DcatProperty getDescription() {
     return description;
   }
@@ -436,8 +397,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the media type
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "mediaType")) })
   public DcatProperty getMediaType() {
     return mediaType;
   }
@@ -465,8 +424,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the format
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "format")) })
   @JsonIgnore
   public DcatProperty getFormat() {
     return format;
@@ -506,8 +463,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the license
    */
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "licenseDocument_id")
   public DctLicenseDocument getLicense() {
     return license;
   }
@@ -596,8 +551,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the byte size
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "byteSize")) })
   public DcatProperty getByteSize() {
     return byteSize;
   }
@@ -625,11 +578,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the release date
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "releaseDate", 
-          columnDefinition = "varchar(255) default '1970-01-01T00:00:00Z'")) })
   public DcatProperty getReleaseDate() {
     return releaseDate;
   }
@@ -657,11 +605,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the update date
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "updateDate", 
-          columnDefinition = "varchar(255) default '1970-01-01T00:00:00Z'")) })
   public DcatProperty getUpdateDate() {
     return updateDate;
   }
@@ -695,14 +638,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the documentation
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_distribution_documentation", joinColumns = {
-      @JoinColumn(name = "distribution_id", referencedColumnName = "id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "documentation", columnDefinition = "LONGTEXT")) })
   public List<DcatProperty> getDocumentation() {
     return documentation;
   }
@@ -733,10 +668,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the download url
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "downloadURL", length = 65535, columnDefinition = "Text")) })
   public DcatProperty getDownloadURL() {
     return downloadURL;
   }
@@ -764,12 +695,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the language
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_distribution_language", joinColumns = {
-      @JoinColumn(name = "distribution_id", referencedColumnName = "id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "language")) })
   public List<DcatProperty> getLanguage() {
     return language;
   }
@@ -803,11 +728,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the linked schemas
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany(cascade = { CascadeType.ALL })
-  // @Fetch(FetchMode.SELECT)
-  @JoinColumns({ @JoinColumn(name = "distribution_id", referencedColumnName = "id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
   @JsonIgnore
   public List<DctStandard> getLinkedSchemas() {
     return linkedSchemas;
@@ -828,8 +748,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the rights
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "rights")) })
   public DcatProperty getRights() {
     return rights;
   }
@@ -857,9 +775,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the status
    */
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumns({ @JoinColumn(name = "status_id", referencedColumnName = "concept_id") })
-  @Where(clause = "type='3'")
   public SkosConceptStatus getStatus() {
     return status;
   }
@@ -888,8 +803,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the checksum
    */
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "checksum_id")
   public SpdxChecksum getChecksum() {
     return checksum;
   }
@@ -945,8 +858,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return the distribution additional config
    */
-  @OneToOne(orphanRemoval = true, cascade = { CascadeType.ALL, CascadeType.REMOVE })
-  @JoinColumn(name = "distribution_additionalconfig_id")
   public DistributionAdditionalConfiguration getDistributionAdditionalConfig() {
     return distributionAdditionalConfig;
   }
@@ -1002,7 +913,6 @@ public class DcatDistribution implements Serializable {
    *
    * @return true, if is rdf
    */
-  @Transient
   public boolean isRdf() {
     return ((this.format != null && (this.format.getValue().equals("RDF")
         || this.format.getValue().equals("application/rdf+xml")))

@@ -17,15 +17,6 @@ package it.eng.idra.beans.dcat;
 
 import com.google.gson.annotations.SerializedName;
 //import it.eng.idra.cache.CacheContentType;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.sparql.vocabulary.FOAF;
 import org.apache.jena.vocabulary.DCTerms;
@@ -33,7 +24,6 @@ import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.SKOS;
 //import org.apache.solr.common.SolrDocument;
 //import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.annotations.GenericGenerator;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -42,8 +32,6 @@ import org.hibernate.annotations.GenericGenerator;
  * @author
  */
 
-@Entity
-@Table(name = "dcat_agent")
 public class FoafAgent {
 
   /** The id. */
@@ -139,10 +127,7 @@ public class FoafAgent {
    * 
    * @GenericGenerator(name="increment", strategy = "increment")
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
-  @Column(name = "agent_id")
+
   public String getId() {
     return id;
   }
@@ -179,7 +164,6 @@ public class FoafAgent {
    *
    * @return the rdf class
    */
-  @Transient
   public static Resource getRdfClass() {
     return RDFClass;
   }
@@ -189,7 +173,6 @@ public class FoafAgent {
    *
    * @return the property uri
    */
-  @Transient
   public String getPropertyUri() {
     return propertyUri;
   }
@@ -228,8 +211,6 @@ public class FoafAgent {
    *
    * @return the name
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "name")) })
   public DcatProperty getName() {
     return name;
   }
@@ -250,8 +231,6 @@ public class FoafAgent {
    *
    * @return the mbox
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "mbox")) })
   public DcatProperty getMbox() {
     return mbox;
   }
@@ -270,8 +249,6 @@ public class FoafAgent {
    *
    * @return the homepage
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "homepage")) })
   public DcatProperty getHomepage() {
     return homepage;
   }
@@ -290,8 +267,6 @@ public class FoafAgent {
    *
    * @return the type
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "type")) })
   public DcatProperty getType() {
     return type;
   }
@@ -310,10 +285,6 @@ public class FoafAgent {
    *
    * @return the identifier
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "identifier", columnDefinition = "LONGTEXT")) })
   public DcatProperty getIdentifier() {
     return identifier;
   }

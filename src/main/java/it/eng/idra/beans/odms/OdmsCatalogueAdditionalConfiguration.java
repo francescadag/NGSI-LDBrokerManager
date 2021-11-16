@@ -15,21 +15,11 @@
 
 package it.eng.idra.beans.odms;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class OdmsCatalogueAdditionalConfiguration.
  */
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "odms_additional_config")
 public class OdmsCatalogueAdditionalConfiguration {
 
   /** The id. */
@@ -62,9 +52,6 @@ public class OdmsCatalogueAdditionalConfiguration {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
   public String getId() {
     return id;
   }

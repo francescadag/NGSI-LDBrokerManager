@@ -15,33 +15,19 @@
 
 package it.eng.idra.beans;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class ConfigurationParameter.
  */
-@Entity
-@Table(name = "configuration")
 public class ConfigurationParameter {
 
   /** The id. */
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   /** The parameter name. */
-  @Column(name = "parameterName", unique = false)
   private String parameterName;
 
   /** The parameter value. */
-  @Column(name = "parameterValue", unique = false)
   private String parameterValue;
 
   /**

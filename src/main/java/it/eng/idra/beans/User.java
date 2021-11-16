@@ -18,57 +18,35 @@ package it.eng.idra.beans;
 import it.eng.idra.beans.exception.InvalidPasswordException;
 import it.eng.idra.utils.JsonRequired;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import org.hibernate.annotations.Type;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class User.
  */
-@Entity
-@Table(name = "user")
 public class User {
 
   /** The id. */
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   /** The username. */
   @JsonRequired
-  @Column(name = "username")
   private String username;
 
   /** The password. */
-  @Column(name = "password")
   private String password;
 
   /** The firstname. */
-  @Column(name = "firstname")
   private String firstname;
 
   /** The lastname. */
-  @Column(name = "lastname")
   private String lastname;
 
   /** The email. */
-  @Column(name = "email")
   private String email;
 
   /** The register date. */
-  @Column(name = "registerDate")
-  @Type(type = "date")
   private Date registerDate;
 
   /** The last access. */
-  @Column(name = "lastAccess")
-  @Type(type = "date")
   private Date lastAccess;
 
   /**

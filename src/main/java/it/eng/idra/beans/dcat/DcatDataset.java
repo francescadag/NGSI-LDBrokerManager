@@ -31,22 +31,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
@@ -58,9 +42,6 @@ import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.SKOS;
 //import org.apache.solr.common.SolrDocument;
 //import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.Where;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -69,9 +50,7 @@ import org.hibernate.annotations.Where;
  * @author
  */
 
-@Entity
-@Table(name = "dcat_dataset")
-@IdClass(DcatDatasetId.class)
+
 public class DcatDataset implements Serializable {
 
   /** The Constant serialVersionUID. */
@@ -83,7 +62,6 @@ public class DcatDataset implements Serializable {
   private String id;
 
   /** The node id. */
-  @Column(name = "nodeID")
   @SerializedName(value = "nodeID")
   private String nodeID;
 
@@ -91,7 +69,6 @@ public class DcatDataset implements Serializable {
   private String nodeName;
 
   /** The has stored rdf. */
-  @Column(name = "hasStoredRDF")
   @SerializedName(value = "hasStoredRDF")
   private boolean hasStoredRDF = false;
 
@@ -450,10 +427,8 @@ public class DcatDataset implements Serializable {
    *
    * @return the id
    */
-  @Id
   // @GeneratedValue(generator = "uuid")
   // @GenericGenerator(name = "uuid", strategy = "uuid2")
-  @Column(name = "dataset_id")
   public String getId() {
     return id;
   }
@@ -472,7 +447,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the node id
    */
-  @Id
   public String getNodeID() {
     return nodeID;
   }
@@ -491,7 +465,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the node name
    */
-  @Transient
   public String getNodeName() {
     return nodeName;
   }
@@ -510,7 +483,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the rdf class
    */
-  @Transient
   public static Resource getRdfClass() {
     return RDFClass;
   }
@@ -538,10 +510,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the title
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "title", columnDefinition = "LONGTEXT")) })
   public DcatProperty getTitle() {
     return title;
   }
@@ -573,10 +541,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the description
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "description", columnDefinition = "LONGTEXT")) })
   public DcatProperty getDescription() {
     return description;
   }
@@ -608,10 +572,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the identifier
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "identifier", columnDefinition = "LONGTEXT")) })
   public DcatProperty getIdentifier() {
     return identifier;
   }
@@ -634,13 +594,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the other identifier
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_otherIdentifier", joinColumns = {
-      @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "otherIdentifier")) })
   public List<DcatProperty> getOtherIdentifier() {
     return otherIdentifier;
   }
@@ -671,9 +624,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the release date
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "releaseDate")) })
   public DcatProperty getReleaseDate() {
     return releaseDate;
   }
@@ -696,8 +646,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the update date
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "updateDate")) })
   public DcatProperty getUpdateDate() {
     return updateDate;
   }
@@ -720,8 +668,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the version
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "version")) })
   public DcatProperty getVersion() {
     return version;
   }
@@ -743,13 +689,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the version notes
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_versionNotes", joinColumns = {
-      @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "versionNotes")) })
   public List<DcatProperty> getVersionNotes() {
     return versionNotes;
   }
@@ -781,10 +720,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the landing page
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "landingPage", length = 65535, columnDefinition = "Text")) })
   public DcatProperty getLandingPage() {
     return landingPage;
   }
@@ -806,11 +741,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the contact point
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany(cascade = { CascadeType.ALL })
-  // @Fetch(FetchMode.SELECT)
-  @JoinColumns({ @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
   public List<VcardOrganization> getContactPoint() {
     return contactPoint;
   }
@@ -849,8 +779,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the frequency
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "frequency")) })
   public DcatProperty getFrequency() {
     return frequency;
   }
@@ -873,8 +801,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the spatial coverage
    */
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "spatialCoverage_id")
   public DctLocation getSpatialCoverage() {
     return spatialCoverage;
   }
@@ -904,8 +830,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the temporal coverage
    */
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "temporalCoverage_id")
   public DctPeriodOfTime getTemporalCoverage() {
     return temporalCoverage;
   }
@@ -934,12 +858,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the language
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_language", joinColumns = {
-      @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "language")) })
   public List<DcatProperty> getLanguage() {
     return language;
   }
@@ -982,8 +900,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the publisher
    */
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "publisher_id")
   public FoafAgent getPublisher() {
     return publisher;
   }
@@ -1015,11 +931,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the theme
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany(cascade = { CascadeType.ALL })
-  @JoinColumns({ @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @Where(clause = "type='1'")
   public List<SkosConceptTheme> getTheme() {
     return theme;
   }
@@ -1077,11 +988,6 @@ public class DcatDataset implements Serializable {
    * @OneToMany(fetch = FetchType.LAZY, cascade = {
    * CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE }, mappedBy = "owner" )
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany(cascade = { CascadeType.ALL })
-  // @Fetch(FetchMode.SELECT)
-  @JoinColumns({ @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
   public List<DcatDistribution> getDistributions() {
     return this.distributions;
 
@@ -1115,11 +1021,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the keywords
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_keyword", joinColumns = {
-      @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
   public List<String> getKeywords() {
     return this.keywords;
   }
@@ -1145,9 +1046,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the access rights
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "accessRights")) })
   public DcatProperty getAccessRights() {
     return accessRights;
   }
@@ -1173,11 +1071,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the conforms to
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany(cascade = { CascadeType.ALL })
-  // @Fetch(FetchMode.SELECT)
-  @JoinColumns({ @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
   @JsonIgnore
   public List<DctStandard> getConformsTo() {
     return conformsTo;
@@ -1199,14 +1092,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the documentation
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_documentation", joinColumns = {
-      @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "documentation", columnDefinition = "LONGTEXT")) })
   public List<DcatProperty> getDocumentation() {
     return documentation;
   }
@@ -1236,14 +1121,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the related resource
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_relatedResource", joinColumns = {
-      @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "relatedResource", columnDefinition = "LONGTEXT")) })
   public List<DcatProperty> getRelatedResource() {
     return relatedResource;
   }
@@ -1270,14 +1147,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the checks for version
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_hasVersion", joinColumns = {
-      @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "hasVersion", columnDefinition = "LONGTEXT")) })
   public List<DcatProperty> getHasVersion() {
     return hasVersion;
   }
@@ -1303,14 +1172,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the checks if is version of
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_isVersionOf", joinColumns = {
-      @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", 
-          column = @Column(name = "isVersionOf", columnDefinition = "LONGTEXT")) })
   public List<DcatProperty> getIsVersionOf() {
     return isVersionOf;
   }
@@ -1339,12 +1200,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the provenance
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_provenance", joinColumns = {
-      @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "provenance")) })
   public List<DcatProperty> getProvenance() {
     return provenance;
   }
@@ -1373,12 +1228,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the sample
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_sample", joinColumns = {
-      @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "sample")) })
   public List<DcatProperty> getSample() {
     return sample;
   }
@@ -1410,12 +1259,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the source
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "dcat_source", joinColumns = {
-      @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "source")) })
   public List<DcatProperty> getSource() {
     return source;
   }
@@ -1440,8 +1283,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the type
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "type")) })
   public DcatProperty getType() {
     return type;
   }
@@ -1464,11 +1305,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the subject
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany(cascade = { CascadeType.ALL })
-  @JoinColumns({ @JoinColumn(name = "dataset_id", referencedColumnName = "dataset_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
-  @Where(clause = "type='2'")
   public List<SkosConceptSubject> getSubject() {
     return subject;
   }
@@ -1487,8 +1323,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the rights holder
    */
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "holder_id")
   public FoafAgent getRightsHolder() {
     return rightsHolder;
   }
@@ -1519,8 +1353,6 @@ public class DcatDataset implements Serializable {
    *
    * @return the creator
    */
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "creator_id")
   public FoafAgent getCreator() {
     return creator;
   }

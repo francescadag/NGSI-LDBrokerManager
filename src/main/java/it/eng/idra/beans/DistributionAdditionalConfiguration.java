@@ -16,30 +16,17 @@
 package it.eng.idra.beans;
 
 import com.google.gson.annotations.SerializedName;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class DistributionAdditionalConfiguration.
  */
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "distribution_additional_config")
 public class DistributionAdditionalConfiguration {
 
   /** The id. */
   private String id;
 
   /** The node id. */
-  @Column(name = "nodeID")
   @SerializedName(value = "nodeID")
   private String nodeId;
 
@@ -73,9 +60,6 @@ public class DistributionAdditionalConfiguration {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
   // @Column(name = "orion_id")
   public String getId() {
     return id;
@@ -131,7 +115,6 @@ public class DistributionAdditionalConfiguration {
    *
    * @return the query
    */
-  @Lob
   public String getQuery() {
     return query;
   }

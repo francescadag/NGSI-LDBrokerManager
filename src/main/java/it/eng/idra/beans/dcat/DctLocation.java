@@ -17,15 +17,6 @@ package it.eng.idra.beans.dcat;
 
 import com.google.gson.annotations.SerializedName;
 //import it.eng.idra.cache.CacheContentType;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.vocabulary.DCTerms;
@@ -33,14 +24,11 @@ import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.SKOS;
 //import org.apache.solr.common.SolrDocument;
 //import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.annotations.GenericGenerator;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class DctLocation.
  */
-@Entity
-@Table(name = "dcat_location")
 public class DctLocation {
 
   /** The Constant RDFClass. */
@@ -102,10 +90,6 @@ public class DctLocation {
    *
    * @return the id
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
-  @Column(name = "location_id")
   public String getId() {
     return id;
   }
@@ -142,9 +126,6 @@ public class DctLocation {
    *
    * @return the geographical identifier
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "geographicalIdentifier")) })
   public DcatProperty getGeographicalIdentifier() {
     return geographicalIdentifier;
   }
@@ -163,9 +144,6 @@ public class DctLocation {
    *
    * @return the geographical name
    */
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "value", column = @Column(name = "geographicalName")) })
   public DcatProperty getGeographicalName() {
     return geographicalName;
   }
@@ -184,8 +162,6 @@ public class DctLocation {
    *
    * @return the geometry
    */
-  @Embedded
-  @AttributeOverrides({ @AttributeOverride(name = "value", column = @Column(name = "geometry")) })
   public DcatProperty getGeometry() {
     return geometry;
   }
@@ -222,7 +198,6 @@ public class DctLocation {
    *
    * @return the rdf class
    */
-  @Transient
   public static Resource getRdfClass() {
     return RDFClass;
   }

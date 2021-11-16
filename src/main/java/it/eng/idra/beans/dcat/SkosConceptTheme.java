@@ -16,9 +16,6 @@
 package it.eng.idra.beans.dcat;
 
 import java.util.List;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 //import org.apache.solr.common.SolrDocument;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,9 +24,6 @@ import org.json.JSONObject;
 /**
  * The Class SkosConceptTheme.
  */
-@Entity
-@Table(name = "theme")
-@DiscriminatorValue("1")
 public class SkosConceptTheme extends SkosConcept {
 
   /** The Constant serialVersionUID. */

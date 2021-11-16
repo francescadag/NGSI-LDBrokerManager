@@ -22,25 +22,10 @@ import it.eng.idra.utils.GsonUtilException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.SKOS;
 //import org.apache.solr.common.SolrDocument;
 //import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -49,9 +34,6 @@ import org.json.JSONObject;
  * Represents a SKOS Concept, e.g SKOSConceptTheme or SKOSConceptSubject.
  */
 
-@Entity
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-@Table(name = "dcat_concept")
 public class SkosConcept implements Serializable {
 
   /** The Constant serialVersionUID. */
@@ -119,10 +101,6 @@ public class SkosConcept implements Serializable {
    * 
    * @GenericGenerator(name="increment", strategy = "increment")
    */
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
-  @Column(name = "concept_id")
   public String getId() {
     return id;
   }
@@ -159,7 +137,6 @@ public class SkosConcept implements Serializable {
    *
    * @return the rdf class
    */
-  @Transient
   public static Resource getRdfClass() {
     return RDFClass;
   }
@@ -169,7 +146,6 @@ public class SkosConcept implements Serializable {
    *
    * @return the property uri
    */
-  @Transient
   public String getPropertyUri() {
     return propertyUri;
   }
@@ -208,11 +184,6 @@ public class SkosConcept implements Serializable {
    *
    * @return the pref label
    */
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @OneToMany(cascade = { CascadeType.ALL })
-  // @Fetch(FetchMode.SELECT)
-  @JoinColumns({ @JoinColumn(name = "concept_id", referencedColumnName = "concept_id"),
-      @JoinColumn(name = "nodeID", referencedColumnName = "nodeID") })
   public List<SkosPrefLabel> getPrefLabel() {
     return prefLabel;
   }

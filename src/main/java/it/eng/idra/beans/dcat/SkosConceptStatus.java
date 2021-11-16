@@ -16,9 +16,6 @@
 package it.eng.idra.beans.dcat;
 
 import java.util.List;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 //import org.apache.solr.common.SolrDocument;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,9 +24,6 @@ import org.json.JSONObject;
 /**
  * The Class SkosConceptStatus.
  */
-@Entity
-@Table(name = "status")
-@DiscriminatorValue("3")
 public class SkosConceptStatus extends SkosConcept {
 
   /** The Constant serialVersionUID. */

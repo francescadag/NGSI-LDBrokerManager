@@ -15,121 +15,88 @@
 
 package it.eng.idra.beans;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class DcatThemes.
  */
-@Entity
-@Table(name = "themes")
 public class DcatThemes {
 
   /** The identifier. */
-  @Id
   private String identifier;
 
   /** The bg. */
-  @Lob
   private String bg;
 
   /** The cs. */
-  @Lob
   private String cs;
 
   /** The da. */
-  @Lob
   private String da;
 
   /** The de. */
-  @Lob
   private String de;
 
   /** The el. */
-  @Lob
   private String el;
 
   /** The en. */
-  @Lob
   private String en;
 
   /** The es. */
-  @Lob
   private String es;
 
   /** The et. */
-  @Lob
   private String et;
 
   /** The fi. */
-  @Lob
   private String fi;
 
   /** The fr. */
-  @Lob
   private String fr;
 
   /** The ga. */
-  @Lob
   private String ga;
 
   /** The hr. */
-  @Lob
   private String hr;
 
   /** The hu. */
-  @Lob
   private String hu;
 
   /** The it. */
-  @Lob
   private String it;
 
   /** The lt. */
-  @Lob
   private String lt;
 
   /** The lv. */
-  @Lob
   private String lv;
 
   /** The mt. */
-  @Lob
   private String mt;
 
   /** The nl. */
-  @Lob
   private String nl;
 
   /** The no. */
-  @Lob
   private String no;
 
   /** The pl. */
-  @Lob
   private String pl;
 
   /** The pt. */
-  @Lob
   private String pt;
 
   /** The ro. */
-  @Lob
   private String ro;
 
   /** The sk. */
-  @Lob
   private String sk;
 
   /** The sl. */
-  @Lob
   private String sl;
 
   /** The sv. */
-  @Lob
   private String sv;
 
   /**

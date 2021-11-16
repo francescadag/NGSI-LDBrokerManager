@@ -16,23 +16,11 @@
 package it.eng.idra.beans.webscraper;
 
 import java.util.List;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class DatasetSelector.
  */
-@Entity
-@Table(name = "odms_sitemap_dataset_selector")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class DatasetSelector extends WebScraperSelector {
 
   /**
@@ -65,10 +53,6 @@ public class DatasetSelector extends WebScraperSelector {
    * @see it.eng.idra.beans.webscraper.WebScraperSelector#getParentSelectors()
    */
   @Override
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "odms_sitemap_dataset_selector_parentSelector", joinColumns = {
-      @JoinColumn(name = "selector_id") })
   public List<String> getParentSelectors() {
     return parentSelectors;
   }
@@ -79,10 +63,6 @@ public class DatasetSelector extends WebScraperSelector {
    * @see it.eng.idra.beans.webscraper.WebScraperSelector#getStopValues()
    */
   @Override
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @ElementCollection
-  @CollectionTable(name = "odms_sitemap_dataset_selector_stopValues", joinColumns = {
-      @JoinColumn(name = "selector_id") })
   public List<String> getStopValues() {
     return stopValues;
   }

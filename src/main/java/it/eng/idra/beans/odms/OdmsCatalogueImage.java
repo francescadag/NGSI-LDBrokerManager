@@ -16,30 +16,18 @@
 package it.eng.idra.beans.odms;
 
 import com.google.gson.annotations.Expose;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class OdmsCatalogueImage.
  */
-@Entity
-@Table(name = "odms_image")
 public class OdmsCatalogueImage {
 
   /** The image id. */
-  @Id
-  @Column(name = "image_id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Expose
   private int imageId;
 
   /** The image data. */
-  @Column(columnDefinition = "LONGTEXT")
   @Expose
   private String imageData;
 

@@ -17,8 +17,6 @@ package it.eng.idra.beans.dcat;
 
 //import it.eng.idra.cache.CacheContentType;
 import java.util.UUID;
-import javax.persistence.Embeddable;
-import javax.persistence.Transient;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
@@ -28,7 +26,6 @@ import org.apache.jena.rdf.model.ResourceFactory;
 /**
  * The Class DcatProperty.
  */
-@Embeddable
 public class DcatProperty {
 
   // private String id;
@@ -125,7 +122,6 @@ public class DcatProperty {
    *
    * @return the uri
    */
-  @Transient
   public String getUri() {
     return uri;
   }
@@ -144,7 +140,6 @@ public class DcatProperty {
    *
    * @return the range
    */
-  @Transient
   public Resource getRange() {
     return range;
   }
@@ -205,7 +200,6 @@ public class DcatProperty {
    *
    * @return the property
    */
-  @Transient
   public Property getProperty() {
     return property;
   }
