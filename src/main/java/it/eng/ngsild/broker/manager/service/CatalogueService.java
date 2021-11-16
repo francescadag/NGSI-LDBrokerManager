@@ -8,15 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.UUID;
-
 import javax.ws.rs.core.MediaType;
 import org.apache.http.HttpResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +36,9 @@ import it.eng.ngsild.broker.manager.model.Configurations;
 
 @Service
 public class CatalogueService  {
+	
+    /** The logger. */
+	private static Logger logger = LogManager.getLogger(CatalogueService.class);
 
 	public CatalogueService() {
 	}
@@ -45,19 +47,16 @@ public class CatalogueService  {
 	@Value("${idra.basepath}")
 	private String idraBasePath;
 	
-	// Riceve un nodeId
 	public int start(Configurations config) throws Exception {
-		return addCatalogueInOrion(config);
+		return addCatalogueInCb(config);
 	}
 	
-	// Riceve un nodeId
 	public int delete(Configurations config) throws Exception {
-		return deleteCatalogueFromOrion(config);
+		return deleteCatalogueFromCb(config);
 	}
+
 	
-	
-	
-	public int addCatalogueInOrion(Configurations config) throws Exception {
+	public int addCatalogueInCb(Configurations config) throws Exception {
 		
 		String nodeId = config.getCatalogueId();
 		String urlCB = config.getContextBrokerUrl() + "/ngsi-ld/v1/";
@@ -65,14 +64,14 @@ public class CatalogueService  {
 	      ArrayList<String> allDatasets = new ArrayList<String>();
 	      ArrayList<String> allEntities = new ArrayList<String>();
 	      
-	      // OTTENGO IL CATALOGO tramite API di Idra
+	      // I get the catalogue through Idra API
 	      RestTemplate restTemplate = new RestTemplate();
 	      
 	      OdmsCatalogue node = restTemplate
 	    	      .getForObject(idraBasePath + "/Idra/api/v1/" + "/client/catalogues/" + nodeId, OdmsCatalogue.class);
-	      System.out.println("\n NOME CATALOGUE: " + node.getName());
+	      logger.info("CATALOGUE NAME: " + node.getName());
 
-	      // OTTENGO I DATASETS tramite API di Idra
+	      // I get the datasets through Idra API
 	      ResponseEntity<String> resultDatasets = restTemplate.getForEntity(idraBasePath + "/Idra/api/v1/" 
 	      + "/client/catalogues/" + nodeId + "/datasets", String.class);
 	      ObjectMapper objectMapper = new ObjectMapper();
@@ -81,7 +80,7 @@ public class CatalogueService  {
 	      DcatDataset[] datasetsList = objectMapper.readValue(jsonNode.get("results"), DcatDataset[].class);
 	      List<DcatDataset> datasets = Arrays.asList(datasetsList);
 
-	      // AGGIUNTA DEI DATASETS
+	      // ADDING DATASETS
 	      for (DcatDataset dataset : datasets) {
 
 	        String idDataset = "\"urn:ngsi-ld:Catalogue:dataset:" + dataset.getId() + "\"";
@@ -89,7 +88,7 @@ public class CatalogueService  {
 	          allDatasets.add(idDataset);
 	        }
 	        
-	        // AGENT del DATASET
+	        // AGENT of the DATASET
 	        if (dataset.getCreator() != null) {
 //		        if (dataset.getCreator() != null && (!dataset.getCreator().getIdentifier()
 //		        		.getValue().equals("n.d") || !dataset.getCreator().getIdentifier()
@@ -99,16 +98,17 @@ public class CatalogueService  {
 //	          if (identificator == null)
 //	        	  identificator = UUID.randomUUID().toString();
 	          String idDs = "urn:ngsi-ld:id:" + identificator;     
-	          String api = urlCB + "entities/" + idDs;
 	          
 	          String agentType = "";
 	          if (creator.getType() != null) {
 	        	  agentType = creator.getType().getValue();
 	          }
-
+	          
+	          //String api = urlCB + "entities/" + idDs;
 	          //int status = restRequest(api, "", "GET");
 	          //if (status != 200) {
-	            // AGGIUNTA dell'AGENT CREATOR
+	          
+	            // ADDING AGENT CREATOR
 	            String type = "AgentDCAT-AP";
 	            String agent = creator.getName().getValue();
 	      
@@ -137,16 +137,17 @@ public class CatalogueService  {
 //	          if (identificator == null)
 //	        	  identificator = UUID.randomUUID().toString();
 	          String idDs = "urn:ngsi-ld:id:" + identificator;     
-	          String api = urlCB + "entities/" + idDs;
 	          
 	          String agentType = "";
 	          if (publisher.getType() != null) {
 	        	  agentType = publisher.getType().getValue();
 	          }
 
+	          //String api = urlCB + "entities/" + idDs;
 	          //int status = restRequest(api, "", "GET");
 	          //if (status != 200) {
-	            // AGGIUNTA dell'AGENT PUBLISHER
+	          
+	            // ADDING AGENT PUBLISHER
 	            String type = "AgentDCAT-AP";
 	            String agent = publisher.getName().getValue();
 	      
@@ -162,7 +163,7 @@ public class CatalogueService  {
 	            if (!allEntities.contains(data)) {
 	              allEntities.add(data);
 	            }
-
+	            
 	          //}
 	          
 	        }
@@ -177,16 +178,17 @@ public class CatalogueService  {
 	          String idDs = "urn:ngsi-ld:id:" + identificator; 
 //	          if (identificator == null)
 //	        	  identificator = UUID.randomUUID().toString();
-	          String api = urlCB + "entities/" + idDs;
 	          
 	          String agentType = "";
 	          if (holder.getType() != null) {
 	        	  agentType = holder.getType().getValue();
 	          }
 
+	          //String api = urlCB + "entities/" + idDs;
 	          //int status = restRequest(api, "", "GET");
 	          //if (status != 200) {
-	            // AGGIUNTA dell'AGENT PUBLISHER
+	          
+	            // ADDING AGENT RIGHTS HOLDER
 	            String type = "AgentDCAT-AP";
 	            String agent = holder.getName().getValue();
 	      
@@ -206,7 +208,7 @@ public class CatalogueService  {
 	        }
 	        
 	                
-	        // DISTRIBUTIONS
+	        // ADDING DISTRIBUTIONS
 	        ArrayList<String> allDistributions = new ArrayList<String>();
 	        
 	        List<DcatDistribution> distributions = dataset.getDistributions();
@@ -219,7 +221,7 @@ public class CatalogueService  {
 
 	          String identificat = d.getId();
 	          
-	          // OTTENGO LA DISTRIBUTION DA IDRA
+	          // I get the Distributions through Idra API
 	          String apiD = idraBasePath + "/Idra/api/v1/" + "/client/catalogues/" + nodeId + "/datasets/" 
 	        		  + dataset.getId() + "/distributions/" + d.getId();
 	          Map<String, String> headers = new HashMap<String, String>();
@@ -238,35 +240,16 @@ public class CatalogueService  {
 	          
 	          String idDis = "urn:ngsi-ld:DistributionDCAT-AP:id:" + identificat;
 	                
-	          String api = urlCB + "entities/" + idDis;
+	          //String api = urlCB + "entities/" + idDis;
 	          //int status = restRequest(api, "", "GET");
 	          //if (status != 200) {
 	            
 	            String typeDis = "DistributionDCAT-AP";
 	            
-		        String title = titleD.replace("\n", " ");
-		        title = title.replace("´", " ");
-		        title = title.replace("'", "");
-		        title = title.replace("/", " ");
-		        title = title.replace("\\", " ");
-		        title = title.replace("\"", "");
-		        String titleDis = title.replace("\r", " ");
+	            String titleDis = titleD.replaceAll("[^a-zA-Z0-9]", " ");
 
-//		        String descrDs = des.replace("\n", " ");
-//		        descrDs = descrDs.replace("´", " ");
-//		        descrDs = descrDs.replace("'", "");
-//		        descrDs = descrDs.replace("/", "");
-//		        descrDs = descrDs.replace("\\", " ");
-//		        descrDs = descrDs.replace("\"", "");
-//		        descrDs = descrDs.replace("•", " ");
-//		        descrDs = descrDs.replace("#", "");
-//		        descrDs = descrDs.replace("*", "");
-//		        descrDs = descrDs.replace("“", "");
-//		        descrDs = descrDs.replace("’", "");
-//		        String descr = descrDs.replace("\r", " ");
+	            String descr = des.replaceAll("[^a-zA-Z0-9]", " ");
 
-	            d.getNodeId();
-	           
 	            ArrayList<String> languageList = new ArrayList<String>();
 	            for(DcatProperty lang: d.getLanguage()) {
 	            	if (lang.getValue() != "")
@@ -282,12 +265,12 @@ public class CatalogueService  {
 	            	checksum = d.getChecksum().getChecksumValue().getValue();
 	            }
 
-	            // aggiungere dateCreated e dateModified come TIMESTAMP della Entity
+	            // aggiungere dateCreated e dateModified come TIMESTAMP della Entity?
 	            
 	            String dataDis = "{ \"id\": \"" + idDis + "\", \"type\": \"" + typeDis + "\","
-//	                + "\"description\": { " 
-//	                + "\"type\": \"Property\","
-//	                + "\"value\": \"" + descr + "\" }," 
+	                + "\"description\": { " 
+	                + "\"type\": \"Property\","
+	                + "\"value\": \"" + descr + "\" }," 
 	                + "\"title\": { "
 	                + "\"type\": \"Property\","
 	                + "\"value\": [ \"" + titleDis + "\" ]" 
@@ -349,27 +332,17 @@ public class CatalogueService  {
 	            if (!allEntities.contains(dataDis)) {
 	              allEntities.add(dataDis);
 	            }
-
 	          //}
 	        } 
-	        
 
-	        //urn:ngsi-ld:Dataset:id:HUZY:68185655
 	        String idDs = "urn:ngsi-ld:Dataset:id:" + dataset.getId();     
-	        String api = urlCB + "entities/" + idDs;
-
+	        //String api = urlCB + "entities/" + idDs;
 	        //int status = restRequest(api, "", "GET");
 	        //if (status != 200) {
 	        
-	          // AGGIUNTA DATASET
+	          // ADDING DATASET
 	          String des = dataset.getDescription().getValue();
-	          String descrDs = des.replace("\n", " ");
-	          descrDs = descrDs.replace("´", " ");
-	          descrDs = descrDs.replace("'", "");
-	          descrDs = descrDs.replace("/", " ");
-	          descrDs = descrDs.replace("\\", " ");
-	          descrDs = descrDs.replace("\"", "");
-	          String descr = descrDs.replace("\r", " ");
+	          String descr = des.replaceAll("[^a-zA-Z0-9]", " ");
 
 	          String creator = "";
 	          if (dataset.getCreator() != null) {
@@ -461,10 +434,10 @@ public class CatalogueService  {
 	          }
 
 	          // dateCreated è la creazione della Entity
-	          // dateModified Timestamp of the last modification of the entity. This will usually be allocated by the storage platform
-	          
+	          // dateModified Timestamp of the last modification of the entity. 
+	          // This will usually be allocated by the storage platform
+	   
 	          String typeDs = "Dataset";
-	          api = urlCB + "entities/";
 	          String dataDs = "{ \"id\": \"" + idDs + "\", \"type\": \"" + typeDs + "\","
 	              + "\"description\": { " 							
 	              + "\"type\": \"Property\","
@@ -564,12 +537,12 @@ public class CatalogueService  {
 	          if (!allEntities.contains(dataDs)) {
 	            allEntities.add(dataDs);
 	          }
-
 	      }
 
 	      int identificator = node.getId();
 	      String id = "urn:ngsi-ld:Catalogue:id:" + identificator;
 	      String api = urlCB + "entities/" + id;
+          //String api = urlCB + "entities/";
 	      //int status = restRequest(api, "", "GET");
 	      //if (status != 200) {
 
@@ -588,12 +561,14 @@ public class CatalogueService  {
 
 //	        System.out.println(" ----------- location :" + node.getLocation());
 //	        System.out.println(" ----------- location descrp:" + node.getLocationDescription());
-	        
+	        String des = node.getDescription();
+	        String description = des.replaceAll("[^a-zA-Z0-9]", " ");
+
 	        String type = "CatalogueDCAT-AP";
 	        String data = "{ \"id\": \"" + id + "\", \"type\": \"" + type + "\","
 	            + "\"description\": { " 
 	            + "\"type\": \"Property\","
-	            + "\"value\": \"" + node.getDescription() + "\" }," 
+	            + "\"value\": \"" + description + "\" }," 
 	            + "\"publisher\": { " 
 	            + "\"type\": \"Property\","
 	            + "\"value\": \"" + node.getPublisherName() + "\" }," 
@@ -662,7 +637,7 @@ public class CatalogueService  {
 	          allEntities.add(data);
 	        }
 
-
+	        
 	      // POST CREATE request in BATCH
 	      int status = 200;
 	      api = urlCB + "entityOperations/create";
@@ -673,36 +648,34 @@ public class CatalogueService  {
 	      } else {
 	    	// POST CREATE BATCH 
 	        status = restRequest(api, allEntities.toString(), "POST");
-	        System.out.println("STATUS CREATE " + status);
+	        logger.info("STATUS CREATE " + status);
 	      }
 
 	  return status;
 	}
 	
-	
-	
+
 	  /**
-	   * Delete a Catalogue from Orion.
+	   * Delete a Catalogue from the CB.
 	  // * @throws Exception 
 	  // * @throws MalformedURLException 
 	   */
-	  public int deleteCatalogueFromOrion(Configurations config) throws MalformedURLException, Exception {
+	  public int deleteCatalogueFromCb(Configurations config) throws MalformedURLException, Exception {
 		  
 		  String nodeId = config.getCatalogueId();
 		  String urlCB = config.getContextBrokerUrl() + "/ngsi-ld/v1/";
 	      
-	      // OTTENGO IL CATALOGO
+	      // I get the Catalogue through Idra API
 	      RestTemplate restTemplate = new RestTemplate();
 	      ResponseEntity<String> result = restTemplate.getForEntity(idraBasePath + "/Idra/api/v1/" 
 	      + "/client/catalogues/" + nodeId, String.class); 
-	      System.out.println("\n RISULTATO GET CATALOGUE: " + result.getStatusCodeValue());
-	      System.out.println("\n CATALOGUE: " + result.getBody());
+	      logger.info("RESULT GET CATALOGUE: " + result.getStatusCodeValue());
 	      
 	      OdmsCatalogue node = restTemplate
 	    	      .getForObject(idraBasePath + "/Idra/api/v1/" + "/client/catalogues/" + nodeId, OdmsCatalogue.class);
-	      System.out.println("\n CATALOGUE NAME to delete: " + node.getName());
+	      logger.info("CATALOGUE NAME to delete: " + node.getName());
 
-	      // OTTENGO I DATASETS
+	      // I get the Datasets through Idra API
 	      ResponseEntity<String> resultDatasets = restTemplate.getForEntity(idraBasePath + "/Idra/api/v1/" 
 	      + "/client/catalogues/" + nodeId + "/datasets", String.class);
 	      ObjectMapper objectMapper = new ObjectMapper();
@@ -711,20 +684,20 @@ public class CatalogueService  {
 	      DcatDataset[] datasetsList = objectMapper.readValue(jsonNode.get("results"), DcatDataset[].class);
 	      List<DcatDataset> datasets = Arrays.asList(datasetsList);
 
-	      // ELIMINAZIONE
+	      // DELETING
 	      ArrayList<String> listId = new ArrayList<String>();
 	  
-	      // ELIMINAZIONE CATALOGUE
+	      // CATALOGUE DELETING
 	      int identificator = node.getId();
 	      String id = "\"urn:ngsi-ld:Catalogue:id:" + identificator + "\"";
 	      listId.add(id);
 	      
-	      // ELIMINAZIONE AGENT del CATALOGUE
+	      // CATALOGUE AGENT DELETING
 	      identificator = node.getId();
 	      id = "\"urn:ngsi-ld:id:" + identificator + "\"";
 	      listId.add(id);
 	      
-	      // ELIMINAZIONE DATASETS
+	      // DATASETS DELETING 
 	      //List<DcatDataset> datasets = MetadataCacheManager.getAllDatasetsByOdmsCatalogue(node.getId());
 	      for (DcatDataset dataset : datasets) {   
 	        String identif = dataset.getId();
@@ -733,13 +706,14 @@ public class CatalogueService  {
 	          listId.add(idDs);
 	        }
 	        
-	        //ELIMINAZIONE AGENTS dei DATASETS
+	        // DATASETS AGENTS DELETING 
 	        // 1. CREATORS
 	        if (dataset.getCreator() != null) {
 	          identif = dataset.getCreator().getId();
 	          idDs = "\"urn:ngsi-ld:id:" + identif + "\"";
 	          if (!listId.contains(idDs)) {
 	            listId.add(idDs);
+	            
 	          }
 	        }
 	        // 2. PUBLISHERS
@@ -748,6 +722,7 @@ public class CatalogueService  {
 	          idDs = "\"urn:ngsi-ld:id:" + identif + "\"";
 	          if (!listId.contains(idDs)) {
 	            listId.add(idDs);
+	            
 	          }
 	        }
 	        // 3. RIGHT HOLDERS
@@ -756,10 +731,11 @@ public class CatalogueService  {
 	          idDs = "\"urn:ngsi-ld:id:" + identif + "\"";
 	          if (!listId.contains(idDs)) {
 	            listId.add(idDs);
+	            
 	          }
 	        }
 	        
-	        //ELIMINAZIONE DISTRIBUTIONS
+	        // DISTRIBUTIONS DELETING
 	        List<DcatDistribution> distributions = dataset.getDistributions();
 	        for (DcatDistribution d : distributions) {
 	          String identificat = d.getId();
@@ -767,6 +743,7 @@ public class CatalogueService  {
 
 	          if (!listId.contains(idDis)) {
 	            listId.add(idDis);
+	            
 	          }
 
 	        } 
@@ -782,18 +759,19 @@ public class CatalogueService  {
 	      } else {
 	    	// POST DELETE BATCH 
 	        status = restRequest(api, data, "POST");
-	        System.out.println("STATUS DELETE " + status);
+	        logger.info("STATUS DELETE " + status);
 	        if (status != 200 && status != 207 && status != 204 && status != -1 
 	            && status != 201 && status != 301) {
-	          throw new Exception("------------ STATUS DELETE DISTRIBUTION - ORION: " + status);
+	          throw new Exception("------------ STATUS DELETE DISTRIBUTION - CONTEXT BROKER: " + status);
 	        }
 	      }
+
 	      return status;
 	  }
 	  
 
 	  /**
-	   * Post Request on Orion with Check on the number of Entities.
+	   * Post Request on CB with Check on the number of Entities.
 	// * @throws Exception exception.
 	   * 
 	   */
@@ -809,27 +787,24 @@ public class CatalogueService  {
 	    for (int k = 0; k < numberOfPost; k++) {
 	      List<String> list = listId.subList(i, l + 1);
 	      data =  list.toString();
-//	      System.out.println("\n NEL FOR, CICLO " + k + " num elem da considerare: " + list.size() + " i = "  + i 
-//	    		  + " l= " + l + "\n");
-	      //System.out.println("\n DATA:"+data);
+
 	      int status = restRequest(api, data, "POST");
 	      if (status != 200 && status != 207 && status != 204 && status != -1 
 	          && status != 201 && status != 301) {
-	        throw new Exception("------------ STATUS POST - ORION: " + status);
+	        throw new Exception("------------ STATUS POST - CONTEXT BROKER: " + status);
 	      }
 	      i += maxNumberOfEntities;
 	      l += maxNumberOfEntities;
 	    }
 	  
 	    List<String> list = listId.subList(i, (listId.size()));
-//	    System.out.println("\n FUORI DAL FOR, num elem da considerare fino all indice " + (listId.size()-1) +  ":" + list.size() + ", i= " + i + "\n");
 	    if (list.size() != 0) {
 		    data =  list.toString(); 
 	
 		    int status = restRequest(api, data, "POST");
 		    if (status != 200 && status != 207 && status != 204 && status != -1 
 		        && status != 201 && status != 301) {
-		      throw new Exception("------------ STATUS POST - ORION: " + status);
+		      throw new Exception("------------ STATUS POST - CONTEXT BROKER: " + status);
 		    }
 	    }
 	  }	
@@ -852,6 +827,9 @@ public class CatalogueService  {
 		    else if (requestType.equals("GET")) {
 		      response = client.sendGetRequest(api, headers);
 		    }
+		    else if (requestType.equals("DELETE")) {
+			      response = client.sendDeleteRequest(api, headers); 
+			}
 		    int status = client.getStatus(response);
 		    return status;
 	}

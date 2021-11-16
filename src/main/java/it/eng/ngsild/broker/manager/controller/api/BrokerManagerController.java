@@ -3,8 +3,9 @@ package it.eng.ngsild.broker.manager.controller.api;
 import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,9 @@ import it.eng.ngsild.broker.manager.service.CatalogueService;
 
 @RestController
 public class BrokerManagerController {
+	
+    /** The logger. */
+	private static Logger logger = LogManager.getLogger(BrokerManagerController.class);
 
 	@Autowired
 	private CatalogueService cs;
@@ -24,13 +28,13 @@ public class BrokerManagerController {
 		cs = new CatalogueService(); 
 	}
 	
-	// AGGIUNTA CATALOGO, POST
+	// ADDING CATALOGUE, POST
 	@RequestMapping(value="/startProcess", method=RequestMethod.POST)  
 	@CrossOrigin(origins = {"${idra.basepath}"})
 	public Response start(@Valid @RequestBody Configurations config) {
 		try {
-			System.out.println("\n\n ----- Il Broker Manager per ADD RICEVE l'ID: " + config.getCatalogueId());
-			System.out.println(" ----- e il Context broker Url: " + config.getContextBrokerUrl());
+			logger.info("Broker Manager for ADDING RICEVE the Node ID: " + config.getCatalogueId());
+			logger.info("and the Context broker URL: " + config.getContextBrokerUrl());
 
 			int status = cs.start(config);
 			
@@ -47,17 +51,18 @@ public class BrokerManagerController {
 		}
 	}
 	
-	// CANCELLAZIONE CATALOGO, POST
+	// DELETING CATALOGUE, POST
 	@RequestMapping(value="/deleteCatalogue", method=RequestMethod.POST)  
 	@CrossOrigin(origins = {"${idra.basepath}"})
-	public Response delete(@Valid @RequestBody Configurations catalogueId) {
+	public Response delete(@Valid @RequestBody Configurations config) {
 		try {
-			System.out.println("\n\n ----- Il Broker Manager per DELETE RICEVE l'ID: " + catalogueId.getCatalogueId());
-			int status = cs.delete(catalogueId);
+			logger.info("Broker Manager for DELETING RICEVE the Node ID: " + config.getCatalogueId());
+			logger.info("and the Context broker URL: " + config.getContextBrokerUrl());
+			int status = cs.delete(config);
 
 	        if (status != 200 && status != 207 && status != 204 && status != -1 
 		            && status != 201 && status != 301) {
-		          throw new Exception("------------ STATUS DELETE - ORION MANAGER: " + status);
+		          throw new Exception("------------ STATUS DELETE - BROKER MANAGER: " + status);
 		    } else {
 				return Response.status(Response.Status.OK).build();
 		    }
@@ -67,7 +72,6 @@ public class BrokerManagerController {
 			return handleErrorResponse500(e);
 		}
 	}
-	
 	
 	  /**
 	   * Handle error response 500.
