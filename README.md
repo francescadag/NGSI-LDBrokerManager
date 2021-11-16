@@ -33,10 +33,10 @@ The Orion Context Broker offers also an asynchronous notification mechanism: app
 information so that they can be informed when something happens. This means the application does not need to continuously poll 
 or repeat query requests.
 
-It is possible to request the sending of notifications to a specific URL, to be specified within the subscription.
+It is possible to request the sending of notifications to a specific end-point, to be specified within the subscription.
 To view all the subscriptions currently active in your Context Broker, you must send the following request:
 ```yml
-curl localhost:1026/ngsi-ld/v1/subscriptions/
+curl contextBrokerUrl/ngsi-ld/v1/subscriptions/
 ```
 
 Below are some examples of requests to the Context Broker to obtain information about the federated catalogues in Idra.
