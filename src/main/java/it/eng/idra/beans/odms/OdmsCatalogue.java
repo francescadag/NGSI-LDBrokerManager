@@ -16,20 +16,14 @@
 package it.eng.idra.beans.odms;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import it.eng.idra.beans.dcat.DcatApFormat;
 import it.eng.idra.beans.dcat.DcatApProfile;
 import it.eng.idra.beans.webscraper.WebScraperSitemap;
-
 //import it.eng.idra.scheduler.IdraScheduler;
-
-import it.eng.idra.scheduler.exception.SchedulerNotInitialisedException;
-import it.eng.idra.utils.CommonUtil;
 import it.eng.idra.utils.JsonRequired;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import org.apache.commons.lang.StringUtils;
 
 // TODO: Auto-generated Javadoc
 /**

@@ -90,23 +90,21 @@ public class CatalogueService  {
 	        
 	        // AGENT of the DATASET
 	        if (dataset.getCreator() != null) {
-//		        if (dataset.getCreator() != null && (!dataset.getCreator().getIdentifier()
-//		        		.getValue().equals("n.d") || !dataset.getCreator().getIdentifier()
-//		        		.getValue().equals("")  )) {
 	          FoafAgent creator = dataset.getCreator();
-	          String identificator = creator.getId();
-//	          if (identificator == null)
-//	        	  identificator = UUID.randomUUID().toString();
+//	          String identificator = creator.getId();
+	          String identificator = creator.getIdentifier().getValue();
+	          identificator = identificator.replaceAll("[^a-zA-Z0-9]", "");
+
 	          String idDs = "urn:ngsi-ld:id:" + identificator;     
 	          
 	          String agentType = "";
 	          if (creator.getType() != null) {
 	        	  agentType = creator.getType().getValue();
 	          }
-	          
-	          //String api = urlCB + "entities/" + idDs;
-	          //int status = restRequest(api, "", "GET");
-	          //if (status != 200) {
+	         
+	          String api = urlCB + "entities/" + idDs;
+	          int status = restRequest(api, "", "GET");
+	          if (status != 200) {
 	          
 	            // ADDING AGENT CREATOR
 	            String type = "AgentDCAT-AP";
@@ -125,17 +123,15 @@ public class CatalogueService  {
 	              allEntities.add(data);
 	            }
 
-	         // }
+	         }
 	        }
 
-//	        if (dataset.getPublisher() != null && (!dataset.getPublisher().getIdentifier()
-//	        		.getValue().equals("n.d") || !dataset.getPublisher().getIdentifier()
-//	        		.getValue().equals("")  )) {
 	        if (dataset.getPublisher() != null) {
 	          FoafAgent publisher = dataset.getPublisher();
-	          String identificator = publisher.getId();
-//	          if (identificator == null)
-//	        	  identificator = UUID.randomUUID().toString();
+//	          String identificator = publisher.getId();
+	          String identificator = publisher.getIdentifier().getValue();
+	          identificator = identificator.replaceAll("[^a-zA-Z0-9]", "");
+
 	          String idDs = "urn:ngsi-ld:id:" + identificator;     
 	          
 	          String agentType = "";
@@ -143,9 +139,9 @@ public class CatalogueService  {
 	        	  agentType = publisher.getType().getValue();
 	          }
 
-	          //String api = urlCB + "entities/" + idDs;
-	          //int status = restRequest(api, "", "GET");
-	          //if (status != 200) {
+	          String api = urlCB + "entities/" + idDs;
+	          int status = restRequest(api, "", "GET");
+	          if (status != 200) {
 	          
 	            // ADDING AGENT PUBLISHER
 	            String type = "AgentDCAT-AP";
@@ -164,29 +160,25 @@ public class CatalogueService  {
 	              allEntities.add(data);
 	            }
 	            
-	          //}
-	          
+	          }       
 	        }
 
-//	        if (dataset.getRightsHolder() != null && (!dataset.getRightsHolder().getIdentifier()
-//	        		.getValue().equals("n.d") || !dataset.getRightsHolder().getIdentifier()
-//	        		.getValue().equals("")  )) {
 	        if (dataset.getRightsHolder() != null) {
 	          FoafAgent holder = dataset.getRightsHolder();
 	          
-	          String identificator = holder.getId();
+//	          String identificator = holder.getId();
+	          String identificator = holder.getIdentifier().getValue();
+	          identificator = identificator.replaceAll("[^a-zA-Z0-9]", "");
 	          String idDs = "urn:ngsi-ld:id:" + identificator; 
-//	          if (identificator == null)
-//	        	  identificator = UUID.randomUUID().toString();
 	          
 	          String agentType = "";
 	          if (holder.getType() != null) {
 	        	  agentType = holder.getType().getValue();
 	          }
 
-	          //String api = urlCB + "entities/" + idDs;
-	          //int status = restRequest(api, "", "GET");
-	          //if (status != 200) {
+	          String api = urlCB + "entities/" + idDs;
+	          int status = restRequest(api, "", "GET");
+	          if (status != 200) {
 	          
 	            // ADDING AGENT RIGHTS HOLDER
 	            String type = "AgentDCAT-AP";
@@ -204,7 +196,8 @@ public class CatalogueService  {
 	            if (!allEntities.contains(data)) {
 	              allEntities.add(data);
 	            }
-	          //}
+			    
+	          }
 	        }
 	        
 	                
@@ -332,6 +325,7 @@ public class CatalogueService  {
 	            if (!allEntities.contains(dataDis)) {
 	              allEntities.add(dataDis);
 	            }
+			    
 	          //}
 	        } 
 
@@ -343,6 +337,9 @@ public class CatalogueService  {
 	          // ADDING DATASET
 	          String des = dataset.getDescription().getValue();
 	          String descr = des.replaceAll("[^a-zA-Z0-9]", " ");
+	          
+	          String t = dataset.getTitle().getValue();
+	          String title = t.replaceAll("[^a-zA-Z0-9]", " ");
 
 	          String creator = "";
 	          if (dataset.getCreator() != null) {
@@ -363,14 +360,16 @@ public class CatalogueService  {
 	          
 	          ArrayList<String> themes = new ArrayList<String>();
 	          List<SkosConceptTheme> theme = dataset.getTheme();
-	          for(SkosConceptTheme t: theme) {
-	            List<SkosPrefLabel> lab = t.getPrefLabel();
+	          for(SkosConceptTheme tema: theme) {
+	            List<SkosPrefLabel> lab = tema.getPrefLabel();
 	            for (SkosPrefLabel label: lab)
-	            	if(label.getValue() != "")
-	            		themes.add("\"" + label.getValue() + "\"");
+	            	if(label.getValue() != "") {
+	            		String l = label.getValue().replaceAll("\"", "");
+	            		themes.add("\"" + l + "\"");
+	            	}
 	          }
-//	          if (themes.size() == 0)
-//	        	  themes.add("");
+	          if (themes.size() == 0)
+	        	  themes.add("");
 	          
 	          ArrayList<String> keywords = new ArrayList<String>();
 	          for (String keyw: dataset.getKeywords()) {
@@ -393,8 +392,10 @@ public class CatalogueService  {
 	          }
 	          ArrayList<String> otherIdentifier = new ArrayList<String>();
 	          for (DcatProperty otId: dataset.getOtherIdentifier()) {
-	          	if(otId.getValue() != "")
-	          		otherIdentifier.add("\"" + otId.getValue() + "\"");
+	          	if(otId.getValue() != "") {
+	          		String o = otId.getValue().replaceAll("\"", "");
+	          		otherIdentifier.add("\"" + o + "\"");
+	          	}
 	          }
 	          ArrayList<String> provenance = new ArrayList<String>();
 	          for (DcatProperty pr: dataset.getProvenance()) {
@@ -447,7 +448,7 @@ public class CatalogueService  {
 	              + "\"value\": \"\" },"
 	              + "\"title\": { "
 	              + "\"type\": \"Property\","
-	              + "\"value\": [ \"" + dataset.getTitle().getValue() + "\" ]" 
+	              + "\"value\": [ \"" + title + "\" ]" 
 	              + " },"
 	              + "\"landingPage\": { "
 	              + "\"type\": \"Property\","
@@ -563,7 +564,10 @@ public class CatalogueService  {
 //	        System.out.println(" ----------- location descrp:" + node.getLocationDescription());
 	        String des = node.getDescription();
 	        String description = des.replaceAll("[^a-zA-Z0-9]", " ");
-
+	        
+	        String n = node.getName();
+	        String name = n.replaceAll("[^a-zA-Z0-9]", " ");
+	      
 	        String type = "CatalogueDCAT-AP";
 	        String data = "{ \"id\": \"" + id + "\", \"type\": \"" + type + "\","
 	            + "\"description\": { " 
@@ -574,7 +578,7 @@ public class CatalogueService  {
 	            + "\"value\": \"" + node.getPublisherName() + "\" }," 
 	            + "\"title\": { "
 	            + "\"type\": \"Property\","
-	            + "\"value\": [ \"" + node.getName() + "\" ]" 
+	            + "\"value\": [ \"" + name + "\" ]" 
 	            + " }, "
 	            + "\"name\": { " 
 	            + "\"type\": \"Property\","
@@ -631,11 +635,11 @@ public class CatalogueService  {
 	            + "\"type\": \"Property\","
 	            + "\"value\": \"" + agent + "\" }" 
 	            + " }";
-	        //logger.info(" ----------- AGENT dell'ID " + id +  ": " + data); 
 	        
 	        if (!allEntities.contains(data)) {
 	          allEntities.add(data);
 	        }
+	        
 
 	        
 	      // POST CREATE request in BATCH
@@ -643,12 +647,12 @@ public class CatalogueService  {
 	      api = urlCB + "entityOperations/create";
 	      if (allEntities.size() > 200) {
 	    	
-	        postRequestWithCheck(allEntities, api, 200);
+	        status = postRequestWithCheck(allEntities, api, 200);
 	        
 	      } else {
 	    	// POST CREATE BATCH 
 	        status = restRequest(api, allEntities.toString(), "POST");
-	        logger.info("STATUS CREATE " + status);
+	        logger.info("STATUS CREATE CATALOGUE IN THE CB: " + status);
 	      }
 
 	  return status;
@@ -709,7 +713,8 @@ public class CatalogueService  {
 	        // DATASETS AGENTS DELETING 
 	        // 1. CREATORS
 	        if (dataset.getCreator() != null) {
-	          identif = dataset.getCreator().getId();
+	          identif = dataset.getCreator().getIdentifier().getValue();
+	          identif = identif.replaceAll("[^a-zA-Z0-9]", "");
 	          idDs = "\"urn:ngsi-ld:id:" + identif + "\"";
 	          if (!listId.contains(idDs)) {
 	            listId.add(idDs);
@@ -718,7 +723,8 @@ public class CatalogueService  {
 	        }
 	        // 2. PUBLISHERS
 	        if (dataset.getPublisher() != null) {    
-	          identif = dataset.getPublisher().getId();
+	          identif = dataset.getPublisher().getIdentifier().getValue();
+	          identif = identif.replaceAll("[^a-zA-Z0-9]", "");
 	          idDs = "\"urn:ngsi-ld:id:" + identif + "\"";
 	          if (!listId.contains(idDs)) {
 	            listId.add(idDs);
@@ -727,7 +733,8 @@ public class CatalogueService  {
 	        }
 	        // 3. RIGHT HOLDERS
 	        if (dataset.getRightsHolder() != null) {  
-	          identif = dataset.getRightsHolder().getId();
+	          identif = dataset.getRightsHolder().getIdentifier().getValue();
+	          identif = identif.replaceAll("[^a-zA-Z0-9]", "");
 	          idDs = "\"urn:ngsi-ld:id:" + identif + "\"";
 	          if (!listId.contains(idDs)) {
 	            listId.add(idDs);
@@ -754,18 +761,18 @@ public class CatalogueService  {
 	      int status = 200;
 	      if (listId.size() > 200) {
 	    	
-	        postRequestWithCheck(listId, api, 200);
+	        status = postRequestWithCheck(listId, api, 200);
 	        
 	      } else {
+	    	  
 	    	// POST DELETE BATCH 
 	        status = restRequest(api, data, "POST");
 	        logger.info("STATUS DELETE " + status);
-	        if (status != 200 && status != 207 && status != 204 && status != -1 
-	            && status != 201 && status != 301) {
-	          throw new Exception("------------ STATUS DELETE DISTRIBUTION - CONTEXT BROKER: " + status);
-	        }
+//	        if (status != 200 && status != 207 && status != 204 && status != -1 
+//	            && status != 201 && status != 301) {
+//	          throw new Exception("------------ STATUS DELETE DISTRIBUTION - CONTEXT BROKER: " + status);
+//	        }
 	      }
-
 	      return status;
 	  }
 	  
@@ -775,7 +782,7 @@ public class CatalogueService  {
 	// * @throws Exception exception.
 	   * 
 	   */
-	  public void postRequestWithCheck(List<String> listId, String api, int maxNumberOfEntities) throws Exception {
+	  public int postRequestWithCheck(List<String> listId, String api, int maxNumberOfEntities) throws Exception {
 	    String data =  listId.toString();
 	    
 	    int r = (listId.size()) % maxNumberOfEntities;
@@ -784,14 +791,19 @@ public class CatalogueService  {
 	    
 	    int i = 0;
 	    int l = maxNumberOfEntities - 1; // 199
+	    
+	    int status = 200;
+	    
 	    for (int k = 0; k < numberOfPost; k++) {
 	      List<String> list = listId.subList(i, l + 1);
 	      data =  list.toString();
 
-	      int status = restRequest(api, data, "POST");
+	      status = restRequest(api, data, "POST");
+	      
 	      if (status != 200 && status != 207 && status != 204 && status != -1 
 	          && status != 201 && status != 301) {
-	        throw new Exception("------------ STATUS POST - CONTEXT BROKER: " + status);
+	    	  return status;
+//	        throw new Exception("------------ STATUS POST - CONTEXT BROKER: " + status);
 	      }
 	      i += maxNumberOfEntities;
 	      l += maxNumberOfEntities;
@@ -801,12 +813,14 @@ public class CatalogueService  {
 	    if (list.size() != 0) {
 		    data =  list.toString(); 
 	
-		    int status = restRequest(api, data, "POST");
+		    status = restRequest(api, data, "POST");
 		    if (status != 200 && status != 207 && status != 204 && status != -1 
 		        && status != 201 && status != 301) {
-		      throw new Exception("------------ STATUS POST - CONTEXT BROKER: " + status);
+		    	return status;
+//		      throw new Exception("------------ STATUS POST - CONTEXT BROKER: " + status);
 		    }
 	    }
+	    return status;
 	  }	
 	  
 	
