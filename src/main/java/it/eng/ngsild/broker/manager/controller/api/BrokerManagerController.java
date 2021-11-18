@@ -40,7 +40,8 @@ public class BrokerManagerController {
 			
 	        if (status != 200 && status != 207 && status != 204 && status != -1 
 		            && status != 201 && status != 301) {
-		          throw new Exception("------------ STATUS START - BROKER MANAGER: " + status);
+//		          throw new Exception("------------ STATUS START - BROKER MANAGER: " + status);
+	        	  return Response.status(status).build();
 		    } else {
 				return Response.status(Response.Status.OK).build();
 		    }
@@ -62,7 +63,8 @@ public class BrokerManagerController {
 
 	        if (status != 200 && status != 207 && status != 204 && status != -1 
 		            && status != 201 && status != 301) {
-		          throw new Exception("------------ STATUS DELETE - BROKER MANAGER: " + status);
+	        	  return Response.status(status).build();
+//		          throw new Exception("------------ STATUS DELETE - BROKER MANAGER: " + status);
 		    } else {
 				return Response.status(Response.Status.OK).build();
 		    }
