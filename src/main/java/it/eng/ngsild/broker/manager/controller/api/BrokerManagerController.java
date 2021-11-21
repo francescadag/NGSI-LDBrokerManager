@@ -71,7 +71,6 @@ public class BrokerManagerController {
 	   */
 	  private static Response handleErrorResponse500(Exception e) {
 	    e.printStackTrace();
-	    logger.info("SONO QUI");
 	    ErrorResponse error = new ErrorResponse(
 	        String.valueOf(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()), e.getMessage(),
 	        e.getClass().getSimpleName(), "An error occurred, please contact the administrator!");
