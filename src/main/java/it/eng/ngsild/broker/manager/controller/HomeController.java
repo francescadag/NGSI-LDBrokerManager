@@ -10,8 +10,7 @@ public class HomeController {
 	@RequestMapping("/")  
 	@ResponseBody 
 	public String index() {
-		return "Welcome to the Context Broker Manager!";
-		
+		return "The NGSI-LD Broker Manager is running";
 	}
 
 }
