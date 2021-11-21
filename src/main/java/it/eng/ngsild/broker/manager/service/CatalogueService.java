@@ -255,6 +255,7 @@ public class CatalogueService  {
 	            }
 	            String checksum = "";
 	            if (d.getChecksum() != null) {
+	            	//checksum = d.getChecksum().getChecksumValue().getValue().replaceAll("\"", "");
 	            	checksum = d.getChecksum().getChecksumValue().getValue();
 	            }
 
@@ -325,7 +326,6 @@ public class CatalogueService  {
 	            if (!allEntities.contains(dataDis)) {
 	              allEntities.add(dataDis);
 	            }
-			    
 	          //}
 	        } 
 
@@ -339,7 +339,9 @@ public class CatalogueService  {
 	          String descr = des.replaceAll("[^a-zA-Z0-9]", " ");
 	          
 	          String t = dataset.getTitle().getValue();
-	          String title = t.replaceAll("[^a-zA-Z0-9]", " ");
+	          //String title = t.replaceAll("[^a-zA-Z0-9]", " ");
+	          String title = t.replaceAll("\"", "");
+	          title = title.replaceAll("\'", " ");
 
 	          String creator = "";
 	          if (dataset.getCreator() != null) {
@@ -364,8 +366,7 @@ public class CatalogueService  {
 	            List<SkosPrefLabel> lab = tema.getPrefLabel();
 	            for (SkosPrefLabel label: lab)
 	            	if(label.getValue() != "") {
-	            		String l = label.getValue().replaceAll("\"", "");
-	            		themes.add("\"" + l + "\"");
+	            		themes.add("\"" + label.getValue() + "\"");
 	            	}
 	          }
 	          if (themes.size() == 0)
@@ -393,8 +394,7 @@ public class CatalogueService  {
 	          ArrayList<String> otherIdentifier = new ArrayList<String>();
 	          for (DcatProperty otId: dataset.getOtherIdentifier()) {
 	          	if(otId.getValue() != "") {
-	          		String o = otId.getValue().replaceAll("\"", "");
-	          		otherIdentifier.add("\"" + o + "\"");
+	          		otherIdentifier.add("\"" + otId.getValue() + "\"");
 	          	}
 	          }
 	          ArrayList<String> provenance = new ArrayList<String>();
@@ -538,6 +538,7 @@ public class CatalogueService  {
 	          if (!allEntities.contains(dataDs)) {
 	            allEntities.add(dataDs);
 	          }
+	          
 	      }
 
 	      int identificator = node.getId();
@@ -620,6 +621,7 @@ public class CatalogueService  {
 	        if (!allEntities.contains(data)) {
 	          allEntities.add(data);
 	        }
+
 	      
 	      identificator = node.getId();
 	      id = "urn:ngsi-ld:id:" + identificator;   
@@ -640,7 +642,6 @@ public class CatalogueService  {
 	          allEntities.add(data);
 	        }
 	        
-
 	        
 	      // POST CREATE request in BATCH
 	      int status = 200;
@@ -648,13 +649,16 @@ public class CatalogueService  {
 	      if (allEntities.size() > 200) {
 	    	
 	        status = postRequestWithCheck(allEntities, api, 200);
-	        
+	        logger.info("STATUS CREATE CATALOGUE IN THE CB: " + status);
 	      } else {
 	    	// POST CREATE BATCH 
 	        status = restRequest(api, allEntities.toString(), "POST");
 	        logger.info("STATUS CREATE CATALOGUE IN THE CB: " + status);
 	      }
-
+//	  if (status != 200 && status != 207 && status != 204 
+//	        && status != 201 && status != 301) {
+//	      throw new Exception("------------ STATUS POST - CONTEXT BROKER: " + status);
+//	  }
 	  return status;
 	}
 	

@@ -37,14 +37,7 @@ public class BrokerManagerController {
 			logger.info("and the Context broker URL: " + config.getContextBrokerUrl());
 
 			int status = cs.start(config);
-			
-	        if (status != 200 && status != 207 && status != 204 && status != -1 
-		            && status != 201 && status != 301) {
-//		          throw new Exception("------------ STATUS START - BROKER MANAGER: " + status);
-	        	  return Response.status(status).build();
-		    } else {
-				return Response.status(Response.Status.OK).build();
-		    }
+			return Response.status(status).build();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,15 +52,10 @@ public class BrokerManagerController {
 		try {
 			logger.info("Broker Manager for DELETING RICEVE the Node ID: " + config.getCatalogueId());
 			logger.info("and the Context broker URL: " + config.getContextBrokerUrl());
+			
 			int status = cs.delete(config);
+			return Response.status(status).build();
 
-	        if (status != 200 && status != 207 && status != 204 && status != -1 
-		            && status != 201 && status != 301) {
-	        	  return Response.status(status).build();
-//		          throw new Exception("------------ STATUS DELETE - BROKER MANAGER: " + status);
-		    } else {
-				return Response.status(Response.Status.OK).build();
-		    }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,14 +71,12 @@ public class BrokerManagerController {
 	   */
 	  private static Response handleErrorResponse500(Exception e) {
 	    e.printStackTrace();
+	    logger.info("SONO QUI");
 	    ErrorResponse error = new ErrorResponse(
 	        String.valueOf(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()), e.getMessage(),
 	        e.getClass().getSimpleName(), "An error occurred, please contact the administrator!");
 	    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON)
 	        .entity(error.toJson()).build();
 	  }
-	
-	
-
 
 }
