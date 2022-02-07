@@ -13,6 +13,8 @@ This approach that allows context data subscriptions is described in its [docume
 The possible operations, through REST APIs, to communicate with the Context Broker are defined in the specific
 [documentation](https://ngsi-ld-tutorials.readthedocs.io/en/latest/ngsi-ld-operations.html).
 
+The NGSI-LD Broker Manager is a software developed inside the EU founded project [INTERSTAT](https://cef-interstat.eu/).
+
 ## Installation and configurations
 
 It is a Spring Boot application that by default has the TCP/IP port set to the value 8082. 
