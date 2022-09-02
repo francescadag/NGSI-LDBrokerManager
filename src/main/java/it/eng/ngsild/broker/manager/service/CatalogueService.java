@@ -76,6 +76,7 @@ public class CatalogueService  {
 	      + "/client/catalogues/" + nodeId + "/datasets", String.class);
 	      ObjectMapper objectMapper = new ObjectMapper();
 	      JsonNode jsonNode = objectMapper.readTree(resultDatasets.getBody());
+	      System.out.println("\n JSON NODE: " + jsonNode.toString());
 	      
 	      DcatDataset[] datasetsList = objectMapper.readValue(jsonNode.get("results"), DcatDataset[].class);
 	      List<DcatDataset> datasets = Arrays.asList(datasetsList);
